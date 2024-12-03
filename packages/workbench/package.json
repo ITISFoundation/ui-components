@@ -1,0 +1,11 @@
+{
+  "name": "@ui-components/workbench",
+  "version": "1.0.0",
+  "description": "React components for displaying a workbench. Summarized, a workbench consists of a canvas, some global actions and a directed graph representing the data flow, where the nodes are boxes with some buttons, icons, labels and mouse interaction capabilities.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ignacio Pascual <email>",
+  "license": "MIT"
+}
