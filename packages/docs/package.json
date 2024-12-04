@@ -1,0 +1,16 @@
+{
+  "name": "@ui-components/docs",
+  "version": "1.0.0",
+  "description": "Documentation and showcase of the ui-components.",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ignacio Pascual <4764217+ignapas@users.noreply.github.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@ui-components/workbench": "file:../workbench",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
+}
