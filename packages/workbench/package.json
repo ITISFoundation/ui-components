@@ -9,6 +9,7 @@
   "author": "Ignacio Pascual <4764217+ignapas@users.noreply.github.com>",
   "license": "MIT",
   "peerDependencies": {
-    "react": ">=17"
+    "react": ">=17",
+    "react-dom": ">=17"
   }
 }
