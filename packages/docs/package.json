@@ -2,18 +2,52 @@
   "name": "@ui-components/docs",
   "version": "1.0.0",
   "description": "Documentation and showcase of the ui-components.",
-  "main": "index.ts",
+  "main": "src/index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "NODE_ENV=production webpack",
+    "start": "NODE_ENV=development webpack serve",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint --ext .js,.ts,.tsx \"src/\""
   },
   "author": "Ignacio Pascual <4764217+ignapas@users.noreply.github.com>",
-  "license": "MIT",
+  "license": "UNLICENSED",
   "dependencies": {
     "@ui-components/workbench": "file:../workbench",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "typescript": "^5.7.2"
+    "@types/react": "^18.3.13",
+    "@types/react-dom": "^18.3.1",
+    "eslint": "^8.57.1",
+    "eslint-config-react-app": "^7.0.1",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.7.2",
+    "webpack": "^5.97.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.1.0"
+  },
+  "eslintConfig": {
+    "globals": {
+      "globalThis": true
+    },
+    "extends": "react-app",
+    "rules": {
+      "quotes": [
+        "error",
+        "single"
+      ],
+      "jsx-quotes": [
+        "error",
+        "prefer-single"
+      ],
+      "indent": [
+        "error",
+        2
+      ]
+    }
+  },
+  "engines": {
+    "node": ">=18"
   }
 }
