@@ -1,8 +1,10 @@
-import React from 'react'
-import { Box } from '@ui-components/workbench'
+// @ts-ignore
+import { Test } from '@ui-components/workbench'
 
 const App = () => {
-  return <Box title='Amigo'/>
+  return <Test/>
 }
+
+console.log(Test)
 
 export default App

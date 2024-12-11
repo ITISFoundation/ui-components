@@ -2,7 +2,7 @@
   "name": "@ui-components/docs",
   "version": "1.0.0",
   "description": "Documentation and showcase of the ui-components.",
-  "main": "src/index.ts",
+  "main": "src/index.tsx",
   "scripts": {
     "build": "NODE_ENV=production webpack",
     "start": "NODE_ENV=development webpack serve",

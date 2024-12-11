@@ -2,16 +2,34 @@
   "name": "@ui-components/workbench",
   "version": "1.0.0",
   "description": "React components for displaying a workbench. Summarized, a workbench consists of a canvas, some global actions and a directed graph representing the data flow, where the nodes are boxes with some buttons, icons, labels and mouse interaction capabilities.",
-  "main": "src/index.ts",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc --build --clean && tsc --build"
   },
   "author": "Ignacio Pascual <4764217+ignapas@users.noreply.github.com>",
   "license": "UNLICENSED",
   "peerDependencies": {
-    "react": ">=17",
-    "react-dom": ">=17",
     "@types/react": ">=17",
-    "@types/react-dom": ">=17"
+    "@types/react-dom": ">=17",
+    "react": ">=17",
+    "react-dom": ">=17"
+  },
+  "dependencies": {
+    "cytoscape": "^3.30.4",
+    "react-cytoscapejs": "^2.0.0"
+  },
+  "devDependencies": {
+    "@babel/preset-react": "^7.26.3",
+    "babel-loader": "^9.2.1",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.7.2",
+    "webpack": "^5.97.1",
+    "webpack-cli": "^5.1.4"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-react"
+    ]
   }
 }
