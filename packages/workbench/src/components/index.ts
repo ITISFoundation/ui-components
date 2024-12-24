@@ -1,2 +1,2 @@
-export { default as Box } from './Box'
-export { default as Test } from './Test'
+export { default as TestRete } from './TestRete'
+export { default as Node } from './Node'

@@ -20,13 +20,7 @@ module.exports = {
   },
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist'),
-    library: {
-      type: "module",
-    },
-  },
-  experiments: {
-    outputModule: true,
+    path: path.resolve(__dirname, 'dist')
   },
   devtool: process.env.NODE_ENV === 'production' ? false : 'inline-source-map'
 }
