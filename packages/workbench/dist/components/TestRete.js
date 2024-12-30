@@ -31,7 +31,7 @@ const createEditor = (container, theme) => __awaiter(void 0, void 0, void 0, fun
     render.addPreset(rete_react_plugin_1.Presets.classic.setup({
         customize: {
             node: () => props => (0, jsx_runtime_1.jsx)(Node_1.default, Object.assign({}, props, { theme: theme })),
-            connection: () => Connection_1.default
+            connection: () => props => (0, jsx_runtime_1.jsx)(Connection_1.default, Object.assign({}, props, { theme: theme }))
         }
     }));
     connection.addPreset(rete_connection_plugin_1.Presets.classic.setup());

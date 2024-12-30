@@ -25,7 +25,7 @@ const createEditor = async (container: HTMLElement, theme: Theme) => {
   render.addPreset(Presets.classic.setup({
     customize: {
       node: () => props => <Node {...props} theme={theme}/>,
-      connection: () => Connection
+      connection: () => props => <Connection {...props} theme={theme}/>
     }
   }))
   connection.addPreset(ConnectionPresets.classic.setup())

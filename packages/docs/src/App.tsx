@@ -3,7 +3,7 @@ import { TestRete } from '@ui-components/workbench'
 import { useState } from 'react'
 
 const App = () => {
-  const [theme, setTheme] = useState<Theme>(createTheme({ palette: { mode: 'dark' }}))
+  const [theme, setTheme] = useState<Theme>(createTheme({ palette: { mode: 'light' }}))
   const changeTheme = (mode: PaletteMode) => {
     setTheme(createTheme({ palette: { mode }}))
   }
