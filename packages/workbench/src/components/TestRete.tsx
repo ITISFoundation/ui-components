@@ -6,6 +6,7 @@ import { AreaPlugin } from 'rete-area-plugin'
 import { ConnectionPlugin, Presets as ConnectionPresets } from 'rete-connection-plugin'
 import Node from './Node'
 import { Theme, useTheme } from '@mui/material'
+import Connection from './Connection'
 
 type Schemes = GetSchemes<
   ClassicPreset.Node,
@@ -23,7 +24,8 @@ const createEditor = async (container: HTMLElement, theme: Theme) => {
 
   render.addPreset(Presets.classic.setup({
     customize: {
-      node: () => props => <Node {...props} theme={theme}/>
+      node: () => props => <Node {...props} theme={theme}/>,
+      connection: () => Connection
     }
   }))
   connection.addPreset(ConnectionPresets.classic.setup())

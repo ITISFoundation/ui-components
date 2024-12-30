@@ -21,6 +21,7 @@ const rete_area_plugin_1 = require("rete-area-plugin");
 const rete_connection_plugin_1 = require("rete-connection-plugin");
 const Node_1 = __importDefault(require("./Node"));
 const material_1 = require("@mui/material");
+const Connection_1 = __importDefault(require("./Connection"));
 const createEditor = (container, theme) => __awaiter(void 0, void 0, void 0, function* () {
     const socket = new rete_1.ClassicPreset.Socket('socket');
     const editor = new rete_1.NodeEditor();
@@ -29,7 +30,8 @@ const createEditor = (container, theme) => __awaiter(void 0, void 0, void 0, fun
     const render = new rete_react_plugin_1.ReactPlugin({ createRoot: client_1.createRoot });
     render.addPreset(rete_react_plugin_1.Presets.classic.setup({
         customize: {
-            node: () => props => (0, jsx_runtime_1.jsx)(Node_1.default, Object.assign({}, props, { theme: theme }))
+            node: () => props => (0, jsx_runtime_1.jsx)(Node_1.default, Object.assign({}, props, { theme: theme })),
+            connection: () => Connection_1.default
         }
     }));
     connection.addPreset(rete_connection_plugin_1.Presets.classic.setup());

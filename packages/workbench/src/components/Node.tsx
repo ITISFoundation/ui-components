@@ -1,4 +1,4 @@
-import { styled, Theme, useTheme } from '@mui/material'
+import { styled } from '@mui/material'
 import { useMemo } from 'react'
 import { ClassicScheme, Presets, RenderEmit } from 'rete-react-plugin'
 
