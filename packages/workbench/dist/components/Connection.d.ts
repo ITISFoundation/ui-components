@@ -1,4 +1,3 @@
-import { Theme } from '@mui/material';
 import React from 'react';
 import { ClassicScheme } from 'rete-react-plugin';
 declare const _default: import("@emotion/styled").StyledComponent<{
@@ -6,5 +5,5 @@ declare const _default: import("@emotion/styled").StyledComponent<{
         isLoop?: boolean;
     };
     styles?: () => any;
-} & Omit<React.SVGProps<SVGSVGElement>, "ref"> & import("@mui/system").MUIStyledCommonProps<Theme>, {}, {}>;
+} & Omit<React.SVGProps<SVGSVGElement>, "ref"> & import("@mui/system").MUIStyledCommonProps<import("@mui/material").Theme>, {}, {}>;
 export default _default;

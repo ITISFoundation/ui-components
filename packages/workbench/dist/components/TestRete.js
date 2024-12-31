@@ -22,6 +22,7 @@ const rete_connection_plugin_1 = require("rete-connection-plugin");
 const Node_1 = __importDefault(require("./Node"));
 const material_1 = require("@mui/material");
 const Connection_1 = __importDefault(require("./Connection"));
+const Socket_1 = __importDefault(require("./Socket"));
 const createEditor = (container, theme) => __awaiter(void 0, void 0, void 0, function* () {
     const socket = new rete_1.ClassicPreset.Socket('socket');
     const editor = new rete_1.NodeEditor();
@@ -31,7 +32,8 @@ const createEditor = (container, theme) => __awaiter(void 0, void 0, void 0, fun
     render.addPreset(rete_react_plugin_1.Presets.classic.setup({
         customize: {
             node: () => props => (0, jsx_runtime_1.jsx)(Node_1.default, Object.assign({}, props, { theme: theme })),
-            connection: () => props => (0, jsx_runtime_1.jsx)(Connection_1.default, Object.assign({}, props, { theme: theme }))
+            connection: () => props => (0, jsx_runtime_1.jsx)(Connection_1.default, Object.assign({}, props, { theme: theme })),
+            socket: () => props => (0, jsx_runtime_1.jsx)(Socket_1.default, Object.assign({}, props, { theme: theme }))
         }
     }));
     connection.addPreset(rete_connection_plugin_1.Presets.classic.setup());
@@ -42,14 +44,16 @@ const createEditor = (container, theme) => __awaiter(void 0, void 0, void 0, fun
         destroy: () => area.destroy(),
         create: () => __awaiter(void 0, void 0, void 0, function* () {
             const nodeA = new rete_1.ClassicPreset.Node("Node #1");
-            nodeA.addOutput("a", new rete_1.ClassicPreset.Output(socket));
+            nodeA.addOutput("a", new rete_1.ClassicPreset.Output(socket, 'E(m,a)'));
             yield editor.addNode(nodeA);
             const nodeB = new rete_1.ClassicPreset.Node("B");
-            nodeB.addInput("b", new rete_1.ClassicPreset.Input(socket));
-            nodeB.addInput("c", new rete_1.ClassicPreset.Input(socket));
-            nodeB.addOutput("d", new rete_1.ClassicPreset.Output(socket));
+            nodeB.addInput("b", new rete_1.ClassicPreset.Input(socket, 'Field value'));
+            nodeB.addInput("c", new rete_1.ClassicPreset.Input(socket, 'Power (w)'));
+            nodeB.addOutput("d", new rete_1.ClassicPreset.Output(socket, 'Out'));
             yield editor.addNode(nodeB);
             yield area.translate(nodeB.id, { x: 270, y: 0 });
+            yield editor.addConnection(new rete_1.ClassicPreset.Connection(nodeA, "a", nodeB, "b"));
+            yield editor.addConnection(new rete_1.ClassicPreset.Connection(nodeA, "a", nodeB, "c"));
         })
     };
 });

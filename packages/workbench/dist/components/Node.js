@@ -25,16 +25,16 @@ const Node = (props) => {
         for (let i = 0; i < ins.length || i < outs.length; i++) {
             if (i < ins.length && ins[i][1]) {
                 const [key, input] = ins[i];
-                res.push((0, jsx_runtime_1.jsxs)("div", { className: 'wb-node-input', children: [(0, jsx_runtime_1.jsx)("div", { className: 'wb-node-port-label', children: input.label }), (0, jsx_runtime_1.jsx)(RefSocket, { nodeId: id, name: 'input-port', side: 'input', emit: emit, socketKey: key, 
+                res.push((0, jsx_runtime_1.jsxs)("div", { className: 'wb-node-socket wb-socket-input', children: [(0, jsx_runtime_1.jsx)(RefSocket, { nodeId: id, name: 'wb-socket input-socket', side: 'input', emit: emit, socketKey: key, 
                             // @ts-ignore
-                            payload: input.socket })] }, key));
+                            payload: input.socket }), (0, jsx_runtime_1.jsx)(material_1.Typography, { variant: 'caption', className: 'wb-node-port-label', children: input.label })] }, key));
             }
             else {
                 res.push((0, jsx_runtime_1.jsx)("div", {}, `wb-note-input-empty-${i}`));
             }
             if (i < outs.length && outs[i][1]) {
                 const [key, output] = outs[i];
-                res.push((0, jsx_runtime_1.jsxs)("div", { className: 'wb-node-output', children: [(0, jsx_runtime_1.jsx)("div", { className: 'wb-node-port-label', children: output.label }), (0, jsx_runtime_1.jsx)(RefSocket, { nodeId: id, name: 'output-port', side: 'output', emit: emit, socketKey: key, 
+                res.push((0, jsx_runtime_1.jsxs)("div", { className: 'wb-node-socket wb-socket-output', children: [(0, jsx_runtime_1.jsx)(material_1.Typography, { variant: 'caption', className: 'wb-node-port-label', children: output.label }), (0, jsx_runtime_1.jsx)(RefSocket, { nodeId: id, name: 'wb-socket output-socket', side: 'output', emit: emit, socketKey: key, 
                             // @ts-ignore
                             payload: output.socket })] }, key));
             }
@@ -44,13 +44,32 @@ const Node = (props) => {
         }
         return res;
     }, [inputs, outputs]);
-    return ((0, jsx_runtime_1.jsxs)("div", Object.assign({}, rest, { children: [(0, jsx_runtime_1.jsx)("div", { className: 'wb-node-title', children: label }), (0, jsx_runtime_1.jsx)("div", { className: 'wb-node-ports', children: ports })] })));
+    return ((0, jsx_runtime_1.jsxs)("div", Object.assign({}, rest, { children: [(0, jsx_runtime_1.jsx)(material_1.Typography, { className: 'wb-node-title', variant: 'body2', children: label }), (0, jsx_runtime_1.jsx)("div", { className: 'wb-node-socket-container', children: ports })] })));
 };
 exports.default = (0, material_1.styled)(Node)(({ theme }) => `
   border: 1px solid ${theme.palette.divider};
-  & > .wb-node-ports {
+  border-radius: ${theme.shape.borderRadius}px;
+  padding: ${theme.spacing(.5)};
+  & > .wb-node-socket-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    & > .wb-node-socket {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      &.wb-socket-output {
+        justify-content: right;
+      }
+      & > .wb-socket {
+        position: absolute;
+        &.input-socket {
+          right: 100%
+        }
+        &.output-socket {
+          left: 100%
+        }
+      }
+    }
   }
 `);
 //# sourceMappingURL=Node.js.map

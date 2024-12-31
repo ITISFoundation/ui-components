@@ -27,14 +27,12 @@ exports.default = (0, material_1.styled)(Connection)(({ theme, styles }) => `
   overflow: visible !important;
   position: absolute;
   pointer-events: none;
-  width: 9999px;
-  height: 9999px;
   & > path {
     fill: none;
     stroke: ${theme.palette.text.primary};
     stroke-width: 2px;
     pointer-events: auto;
-    ${styles}
+    ${styles && styles()}
   }
 `);
 //# sourceMappingURL=Connection.js.map

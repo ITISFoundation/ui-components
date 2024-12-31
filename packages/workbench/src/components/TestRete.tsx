@@ -1,12 +1,13 @@
 import { useCallback, useEffect } from 'react'
-import { NodeEditor, GetSchemes, ClassicPreset, NodeBase } from 'rete'
-import { ReactPlugin, Presets, ReactArea2D, useRete, ClassicScheme } from 'rete-react-plugin'
+import { NodeEditor, GetSchemes, ClassicPreset } from 'rete'
+import { ReactPlugin, Presets, ReactArea2D, useRete } from 'rete-react-plugin'
 import { createRoot } from 'react-dom/client'
 import { AreaPlugin } from 'rete-area-plugin'
 import { ConnectionPlugin, Presets as ConnectionPresets } from 'rete-connection-plugin'
 import Node from './Node'
 import { Theme, useTheme } from '@mui/material'
 import Connection from './Connection'
+import Socket from './Socket'
 
 type Schemes = GetSchemes<
   ClassicPreset.Node,
@@ -25,7 +26,8 @@ const createEditor = async (container: HTMLElement, theme: Theme) => {
   render.addPreset(Presets.classic.setup({
     customize: {
       node: () => props => <Node {...props} theme={theme}/>,
-      connection: () => props => <Connection {...props} theme={theme}/>
+      connection: () => props => <Connection {...props} theme={theme}/>,
+      socket: () => props => <Socket {...props} theme={theme}/>
     }
   }))
   connection.addPreset(ConnectionPresets.classic.setup())
@@ -37,15 +39,17 @@ const createEditor = async (container: HTMLElement, theme: Theme) => {
     destroy: () => area.destroy(),
     create: async () => {
       const nodeA = new ClassicPreset.Node("Node #1")
-      nodeA.addOutput("a", new ClassicPreset.Output(socket))
+      nodeA.addOutput("a", new ClassicPreset.Output(socket, 'E(m,a)'))
       await editor.addNode(nodeA)
 
       const nodeB = new ClassicPreset.Node("B")
-      nodeB.addInput("b", new ClassicPreset.Input(socket))
-      nodeB.addInput("c", new ClassicPreset.Input(socket))
-      nodeB.addOutput("d", new ClassicPreset.Output(socket))
+      nodeB.addInput("b", new ClassicPreset.Input(socket, 'Field value'))
+      nodeB.addInput("c", new ClassicPreset.Input(socket, 'Power (w)'))
+      nodeB.addOutput("d", new ClassicPreset.Output(socket, 'Out'))
       await editor.addNode(nodeB)
       await area.translate(nodeB.id, { x: 270, y: 0 })
+      await editor.addConnection(new ClassicPreset.Connection(nodeA, "a", nodeB, "b"));
+      await editor.addConnection(new ClassicPreset.Connection(nodeA, "a", nodeB, "c"));
     }
   }
 }
