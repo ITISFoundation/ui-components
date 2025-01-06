@@ -26,7 +26,7 @@ export default styled(Connection)(({ theme, styles }) => `
   pointer-events: none;
   & > path {
     fill: none;
-    stroke: ${theme.palette.text.primary};
+    stroke: ${theme.palette.primary.light};
     stroke-width: 2px;
     pointer-events: auto;
     ${styles && styles()}
