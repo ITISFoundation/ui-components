@@ -55,7 +55,7 @@ const Node = <Scheme extends ClassicScheme>(props: Props<Scheme> & React.Compone
           </div>
         )
       } else {
-        res.push(<div key={`wb-note-input-empty-${i}`}/>)
+        res.push(<div key={`wb-note-output-empty-${i}`}/>)
       }
     }
     return res
@@ -74,6 +74,7 @@ export default styled(Node)(({ theme }) => `
   border: 1px solid ${theme.palette.divider};
   border-radius: ${theme.shape.borderRadius}px;
   padding: ${theme.spacing(.5)};
+  user-select: none;
   & > .wb-node-socket-container {
     display: grid;
     grid-template-columns: 1fr 1fr;

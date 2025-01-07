@@ -39,7 +39,7 @@ const Node = (props) => {
                             payload: output.socket })] }, key));
             }
             else {
-                res.push((0, jsx_runtime_1.jsx)("div", {}, `wb-note-input-empty-${i}`));
+                res.push((0, jsx_runtime_1.jsx)("div", {}, `wb-note-output-empty-${i}`));
             }
         }
         return res;
@@ -50,6 +50,7 @@ exports.default = (0, material_1.styled)(Node)(({ theme }) => `
   border: 1px solid ${theme.palette.divider};
   border-radius: ${theme.shape.borderRadius}px;
   padding: ${theme.spacing(.5)};
+  user-select: none;
   & > .wb-node-socket-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
