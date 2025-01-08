@@ -19,7 +19,6 @@ const Socket = (props) => {
 };
 exports.default = (0, material_1.styled)(Socket)(({ theme }) => `
   display: inline-block;
-  cursor: pointer;
   width: 10px;
   height: 10px;
   border-radius: 50%;

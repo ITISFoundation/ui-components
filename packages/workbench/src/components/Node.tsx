@@ -6,12 +6,14 @@ type Props<S extends ClassicScheme> = {
   data: S["Node"]
   styles?: () => any
   emit: RenderEmit<S>
+  onSocketClick?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>, socketKey: string) => void
+  selectedSocket: string
 }
 
 const { RefSocket } = Presets.classic
 
 const Node = <Scheme extends ClassicScheme>(props: Props<Scheme> & React.ComponentPropsWithoutRef<'div'>) => {
-  const { data: { id, label, inputs, outputs }, emit, styles, ...rest } = props
+  const { data: { id, label, inputs, outputs }, emit, styles, onSocketClick=()=>{}, selectedSocket, ...rest } = props
   const ports = useMemo(() => {
     const ins = Object.entries(inputs)
     const outs = Object.entries(outputs)
@@ -19,8 +21,9 @@ const Node = <Scheme extends ClassicScheme>(props: Props<Scheme> & React.Compone
     for (let i = 0; i < ins.length || i < outs.length; i++) {
       if (i < ins.length && ins[i][1]) {
         const [key, input] = ins[i]
+        console.log(key, input)
         res.push(
-          <div key={key} className='wb-node-socket wb-socket-input'>
+          <div key={key} className='wb-node-socket wb-socket-input' onClick={e => onSocketClick(e, key)}>
             <RefSocket
               nodeId={id}
               name='wb-socket input-socket'
@@ -31,7 +34,7 @@ const Node = <Scheme extends ClassicScheme>(props: Props<Scheme> & React.Compone
               payload={input.socket}
             />
             {/* @ts-ignore */}
-            <Typography variant='caption' className='wb-node-port-label'>{input.label}</Typography>
+            <Typography variant='caption' className='wb-node-port-label'>{input.label} {selectedSocket}</Typography>
           </div>
         )
       } else {
@@ -40,9 +43,9 @@ const Node = <Scheme extends ClassicScheme>(props: Props<Scheme> & React.Compone
       if (i < outs.length && outs[i][1]) {
         const [key, output] = outs[i]
         res.push(
-          <div key={key} className='wb-node-socket wb-socket-output'>
+          <div key={key} className='wb-node-socket wb-socket-output' onClick={e => onSocketClick(e, key)}>
             {/* @ts-ignore */}
-            <Typography variant='caption' className='wb-node-port-label'>{output.label}</Typography>
+            <Typography variant='caption' className='wb-node-port-label'>{output.label} {selectedSocket}</Typography>
             <RefSocket
               nodeId={id}
               name='wb-socket output-socket'
@@ -79,6 +82,7 @@ export default styled(Node)(({ theme }) => `
     display: grid;
     grid-template-columns: 1fr 1fr;
     & > .wb-node-socket {
+      cursor: pointer;
       display: flex;
       flex-direction: row;
       align-items: center;

@@ -13,7 +13,6 @@ const Socket = <T extends ClassicPreset.Socket>(props: React.ComponentPropsWitho
 
 export default styled(Socket)(({ theme }) => `
   display: inline-block;
-  cursor: pointer;
   width: 10px;
   height: 10px;
   border-radius: 50%;

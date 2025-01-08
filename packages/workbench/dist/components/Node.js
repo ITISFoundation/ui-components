@@ -17,7 +17,7 @@ const react_1 = require("react");
 const rete_react_plugin_1 = require("rete-react-plugin");
 const { RefSocket } = rete_react_plugin_1.Presets.classic;
 const Node = (props) => {
-    const { data: { id, label, inputs, outputs }, emit, styles } = props, rest = __rest(props, ["data", "emit", "styles"]);
+    const { data: { id, label, inputs, outputs }, emit, styles, onSocketClick = () => { }, selectedSocket } = props, rest = __rest(props, ["data", "emit", "styles", "onSocketClick", "selectedSocket"]);
     const ports = (0, react_1.useMemo)(() => {
         const ins = Object.entries(inputs);
         const outs = Object.entries(outputs);
@@ -25,16 +25,17 @@ const Node = (props) => {
         for (let i = 0; i < ins.length || i < outs.length; i++) {
             if (i < ins.length && ins[i][1]) {
                 const [key, input] = ins[i];
-                res.push((0, jsx_runtime_1.jsxs)("div", { className: 'wb-node-socket wb-socket-input', children: [(0, jsx_runtime_1.jsx)(RefSocket, { nodeId: id, name: 'wb-socket input-socket', side: 'input', emit: emit, socketKey: key, 
+                console.log(key, input);
+                res.push((0, jsx_runtime_1.jsxs)("div", { className: 'wb-node-socket wb-socket-input', onClick: e => onSocketClick(e, key), children: [(0, jsx_runtime_1.jsx)(RefSocket, { nodeId: id, name: 'wb-socket input-socket', side: 'input', emit: emit, socketKey: key, 
                             // @ts-ignore
-                            payload: input.socket }), (0, jsx_runtime_1.jsx)(material_1.Typography, { variant: 'caption', className: 'wb-node-port-label', children: input.label })] }, key));
+                            payload: input.socket }), (0, jsx_runtime_1.jsxs)(material_1.Typography, { variant: 'caption', className: 'wb-node-port-label', children: [input.label, " ", selectedSocket] })] }, key));
             }
             else {
                 res.push((0, jsx_runtime_1.jsx)("div", {}, `wb-note-input-empty-${i}`));
             }
             if (i < outs.length && outs[i][1]) {
                 const [key, output] = outs[i];
-                res.push((0, jsx_runtime_1.jsxs)("div", { className: 'wb-node-socket wb-socket-output', children: [(0, jsx_runtime_1.jsx)(material_1.Typography, { variant: 'caption', className: 'wb-node-port-label', children: output.label }), (0, jsx_runtime_1.jsx)(RefSocket, { nodeId: id, name: 'wb-socket output-socket', side: 'output', emit: emit, socketKey: key, 
+                res.push((0, jsx_runtime_1.jsxs)("div", { className: 'wb-node-socket wb-socket-output', onClick: e => onSocketClick(e, key), children: [(0, jsx_runtime_1.jsxs)(material_1.Typography, { variant: 'caption', className: 'wb-node-port-label', children: [output.label, " ", selectedSocket] }), (0, jsx_runtime_1.jsx)(RefSocket, { nodeId: id, name: 'wb-socket output-socket', side: 'output', emit: emit, socketKey: key, 
                             // @ts-ignore
                             payload: output.socket })] }, key));
             }
@@ -55,6 +56,7 @@ exports.default = (0, material_1.styled)(Node)(({ theme }) => `
     display: grid;
     grid-template-columns: 1fr 1fr;
     & > .wb-node-socket {
+      cursor: pointer;
       display: flex;
       flex-direction: row;
       align-items: center;

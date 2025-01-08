@@ -18,48 +18,35 @@ const rete_1 = require("rete");
 const rete_react_plugin_1 = require("rete-react-plugin");
 const client_1 = require("react-dom/client");
 const rete_area_plugin_1 = require("rete-area-plugin");
-const rete_connection_plugin_1 = require("rete-connection-plugin");
 const Node_1 = __importDefault(require("./Node"));
 const material_1 = require("@mui/material");
 const Connection_1 = __importDefault(require("./Connection"));
 const Socket_1 = __importDefault(require("./Socket"));
-const createEditor = (container, theme) => __awaiter(void 0, void 0, void 0, function* () {
+const utils_1 = require("../utils");
+const createEditor = (container, theme, socketSelectionState) => __awaiter(void 0, void 0, void 0, function* () {
     const socket = new rete_1.ClassicPreset.Socket('socket');
     const editor = new rete_1.NodeEditor();
     const area = new rete_area_plugin_1.AreaPlugin(container);
-    const connection = new rete_connection_plugin_1.ConnectionPlugin();
     const render = new rete_react_plugin_1.ReactPlugin({ createRoot: client_1.createRoot });
+    const [selectedSocket, setSelectedSocket] = socketSelectionState;
     render.addPreset(rete_react_plugin_1.Presets.classic.setup({
         customize: {
-            node: () => props => (0, jsx_runtime_1.jsx)(Node_1.default, Object.assign({}, props, { theme: theme })),
+            node: () => props => (0, jsx_runtime_1.jsx)(Node_1.default, Object.assign({}, props, { theme: theme, onSocketClick: (_, key) => setSelectedSocket(key), selectedSocket: selectedSocket })),
             connection: () => props => (0, jsx_runtime_1.jsx)(Connection_1.default, Object.assign({}, props, { theme: theme })),
             socket: () => props => (0, jsx_runtime_1.jsx)(Socket_1.default, Object.assign({}, props, { theme: theme }))
         }
     }));
-    connection.addPreset(rete_connection_plugin_1.Presets.classic.setup());
     editor.use(area);
-    area.use(connection);
     area.use(render);
     return {
         destroy: () => area.destroy(),
-        create: () => __awaiter(void 0, void 0, void 0, function* () {
-            const nodeA = new rete_1.ClassicPreset.Node("Node #1");
-            nodeA.addOutput("a", new rete_1.ClassicPreset.Output(socket, 'E(m,a)'));
-            yield editor.addNode(nodeA);
-            const nodeB = new rete_1.ClassicPreset.Node("B");
-            nodeB.addInput("b", new rete_1.ClassicPreset.Input(socket, 'Field value'));
-            nodeB.addInput("c", new rete_1.ClassicPreset.Input(socket, 'Power (w)'));
-            nodeB.addOutput("d", new rete_1.ClassicPreset.Output(socket, 'Out'));
-            yield editor.addNode(nodeB);
-            yield area.translate(nodeB.id, { x: 270, y: 0 });
-            yield editor.addConnection(new rete_1.ClassicPreset.Connection(nodeA, "a", nodeB, "b"));
-            yield editor.addConnection(new rete_1.ClassicPreset.Connection(nodeA, "a", nodeB, "c"));
-        })
+        create: () => (0, utils_1.generateWorkbench)(utils_1.initialWorkbench, area, editor)
     };
 });
 const TestRete = () => {
     const theme = (0, material_1.useTheme)();
-    const createCb = (0, react_1.useCallback)((containerEl) => createEditor(containerEl, theme), [theme]);
+    const socketSelectionState = (0, react_1.useState)('');
+    const createCb = (0, react_1.useCallback)((containerEl) => createEditor(containerEl, theme, socketSelectionState), [theme, socketSelectionState[0]]);
     const [ref, editor] = (0, rete_react_plugin_1.useRete)(createCb);
     (0, react_1.useEffect)(() => {
         if (editor) {

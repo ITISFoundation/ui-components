@@ -4,8 +4,8 @@
   "description": "UI components for Z43",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start-workbench": "npm run build -w packages/workbench -- --watch",
-    "start-docs": "npm start -w packages/docs"
+    "workbench-start": "npm run build -w packages/workbench -- --watch",
+    "docs-start": "npm start -w packages/docs"
   },
   "author": "Ignacio Pascual <4764217+ignapas@users.noreply.github.com>",
   "license": "UNLICENSED",
