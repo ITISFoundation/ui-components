@@ -31,23 +31,28 @@ const createEditor = async (
   editor.use(area)
   area.use(render)
 
+  let translateTimer: NodeJS.Timeout
   area.addPipe(context => {
     if (context.type === 'nodetranslated') {
-      const { data: { id, position }} = context
-      workbenchSetter(prevWorkbench => {
-        const nodeIndex = prevWorkbench.nodes.findIndex(node => node.id === id)
-        return {
-          ...prevWorkbench,
-          nodes: [
-            ...prevWorkbench.nodes.slice(0, nodeIndex),
-            {
-              ...prevWorkbench.nodes[nodeIndex],
-              position
-            },
-            ...prevWorkbench.nodes.slice(nodeIndex + 1)
-          ]
-        }
-      })
+      // Save positions
+      clearTimeout(translateTimer)
+      translateTimer = setTimeout(() => {
+        const { data: { id, position }} = context
+        workbenchSetter(prevWorkbench => {
+          const nodeIndex = prevWorkbench.nodes.findIndex(node => node.id === id)
+          return {
+            ...prevWorkbench,
+            nodes: [
+              ...prevWorkbench.nodes.slice(0, nodeIndex),
+              {
+                ...prevWorkbench.nodes[nodeIndex],
+                position
+              },
+              ...prevWorkbench.nodes.slice(nodeIndex + 1)
+            ]
+          }
+        })
+      }, 200)
     }
     return context
   })
