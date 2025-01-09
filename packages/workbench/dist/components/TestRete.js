@@ -24,7 +24,6 @@ const Connection_1 = __importDefault(require("./Connection"));
 const Socket_1 = __importDefault(require("./Socket"));
 const utils_1 = require("../utils");
 const createEditor = (container, theme, socketSelectionState) => __awaiter(void 0, void 0, void 0, function* () {
-    const socket = new rete_1.ClassicPreset.Socket('socket');
     const editor = new rete_1.NodeEditor();
     const area = new rete_area_plugin_1.AreaPlugin(container);
     const render = new rete_react_plugin_1.ReactPlugin({ createRoot: client_1.createRoot });
@@ -38,9 +37,15 @@ const createEditor = (container, theme, socketSelectionState) => __awaiter(void 
     }));
     editor.use(area);
     area.use(render);
+    area.addPipe(context => {
+        if (context.type === 'nodetranslated') {
+            console.log(context);
+        }
+        return context;
+    });
     return {
         destroy: () => area.destroy(),
-        create: () => (0, utils_1.generateWorkbench)(utils_1.initialWorkbench, area, editor)
+        create: (workbench) => (0, utils_1.generateWorkbench)(workbench, area, editor)
     };
 });
 const TestRete = () => {
@@ -48,13 +53,15 @@ const TestRete = () => {
     const socketSelectionState = (0, react_1.useState)('');
     const createCb = (0, react_1.useCallback)((containerEl) => createEditor(containerEl, theme, socketSelectionState), [theme, socketSelectionState[0]]);
     const [ref, editor] = (0, rete_react_plugin_1.useRete)(createCb);
+    const firstRender = (0, react_1.useRef)(true);
     (0, react_1.useEffect)(() => {
         if (editor) {
-            editor.create();
+            editor.create(firstRender.current ? utils_1.initialWorkbench : utils_1.initialWorkbench);
+            firstRender.current = false;
             return editor.destroy;
         }
     }, [editor]);
-    return ((0, jsx_runtime_1.jsx)("div", { style: { height: '100vh' }, children: (0, jsx_runtime_1.jsx)("div", { ref: ref, style: { position: 'relative', width: '100%', height: '100%' } }) }));
+    return ((0, jsx_runtime_1.jsx)("div", { style: { height: '100vh' }, children: (0, jsx_runtime_1.jsx)("div", { ref: ref, style: { position: 'relative', width: '100%', height: '100%', padding: '18px' } }) }));
 };
 exports.default = TestRete;
 //# sourceMappingURL=TestRete.js.map

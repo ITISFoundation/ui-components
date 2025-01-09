@@ -21,7 +21,6 @@ const Node = <Scheme extends ClassicScheme>(props: Props<Scheme> & React.Compone
     for (let i = 0; i < ins.length || i < outs.length; i++) {
       if (i < ins.length && ins[i][1]) {
         const [key, input] = ins[i]
-        console.log(key, input)
         res.push(
           <div key={key} className='wb-node-socket wb-socket-input' onClick={e => onSocketClick(e, key)}>
             <RefSocket

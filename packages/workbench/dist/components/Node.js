@@ -25,7 +25,6 @@ const Node = (props) => {
         for (let i = 0; i < ins.length || i < outs.length; i++) {
             if (i < ins.length && ins[i][1]) {
                 const [key, input] = ins[i];
-                console.log(key, input);
                 res.push((0, jsx_runtime_1.jsxs)("div", { className: 'wb-node-socket wb-socket-input', onClick: e => onSocketClick(e, key), children: [(0, jsx_runtime_1.jsx)(RefSocket, { nodeId: id, name: 'wb-socket input-socket', side: 'input', emit: emit, socketKey: key, 
                             // @ts-ignore
                             payload: input.socket }), (0, jsx_runtime_1.jsxs)(material_1.Typography, { variant: 'caption', className: 'wb-node-port-label', children: [input.label, " ", selectedSocket] })] }, key));
