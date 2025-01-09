@@ -13,7 +13,8 @@ import { generateWorkbench, initialWorkbench } from '../utils'
 const createEditor = async (
   container: HTMLElement,
   theme: Theme,
-  socketSelectionState: [string, React.Dispatch<React.SetStateAction<string>>]
+  socketSelectionState: [string, React.Dispatch<React.SetStateAction<string>>],
+  workbenchSetter: React.Dispatch<React.SetStateAction<Workbench>>
 ) => {
   const editor = new NodeEditor<Schemes>()
   const area = new AreaPlugin<Schemes, AreaExtra>(container)
@@ -32,7 +33,21 @@ const createEditor = async (
 
   area.addPipe(context => {
     if (context.type === 'nodetranslated') {
-      console.log(context)
+      const { data: { id, position }} = context
+      workbenchSetter(prevWorkbench => {
+        const nodeIndex = prevWorkbench.nodes.findIndex(node => node.id === id)
+        return {
+          ...prevWorkbench,
+          nodes: [
+            ...prevWorkbench.nodes.slice(0, nodeIndex),
+            {
+              ...prevWorkbench.nodes[nodeIndex],
+              position
+            },
+            ...prevWorkbench.nodes.slice(nodeIndex + 1)
+          ]
+        }
+      })
     }
     return context
   })
@@ -46,13 +61,12 @@ const createEditor = async (
 const TestRete = () => {
   const theme = useTheme()
   const socketSelectionState = useState<string>('')
-  const createCb = useCallback((containerEl: HTMLElement) => createEditor(containerEl, theme, socketSelectionState), [theme, socketSelectionState[0]])
+  const [workbench, setWorkbench] = useState<Workbench>(initialWorkbench)
+  const createCb = useCallback((containerEl: HTMLElement) => createEditor(containerEl, theme, socketSelectionState, setWorkbench), [theme, socketSelectionState[0]])
   const [ref, editor] = useRete(createCb)
-  const firstRender = useRef<boolean>(true)
   useEffect(() => {
     if (editor) {
-      editor.create(firstRender.current ? initialWorkbench : initialWorkbench)
-      firstRender.current = false
+      editor.create(workbench)
       return editor.destroy
     }
   }, [editor])

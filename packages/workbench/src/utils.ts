@@ -5,6 +5,7 @@ import { ClassicPreset, NodeEditor } from "rete";
 export const initialWorkbench: Workbench = {
   nodes: [
     {
+      id: '1',
       label: 'Node #1',
       inputs: [
         { id: 'x', label: 'In' }
@@ -15,6 +16,7 @@ export const initialWorkbench: Workbench = {
       position: { x: 0, y: 0 }
     },
     {
+      id: '2',
       label: 'B',
       inputs: [
         { id: 'b', label: 'Field value' },
@@ -41,6 +43,7 @@ export const generateWorkbench = (
   const portIdToNodeMap: { [key: string]: ClassicPreset.Node } = {}
   workbench.nodes.forEach(async node => {
     const newNode = new ClassicPreset.Node(node.label)
+    newNode.id = node.id
     node.inputs.forEach(input => {
       portIdToNodeMap[input.id] = newNode
       newNode.addInput(input.id, new ClassicPreset.Input(socket, input.label))

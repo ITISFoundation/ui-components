@@ -5,6 +5,7 @@ export type Port = {
     label: string;
 };
 export type Node = {
+    id: string;
     label: string;
     inputs: Port[];
     outputs: Port[];

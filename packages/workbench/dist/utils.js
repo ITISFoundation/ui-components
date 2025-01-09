@@ -14,6 +14,7 @@ const rete_1 = require("rete");
 exports.initialWorkbench = {
     nodes: [
         {
+            id: '1',
             label: 'Node #1',
             inputs: [
                 { id: 'x', label: 'In' }
@@ -24,6 +25,7 @@ exports.initialWorkbench = {
             position: { x: 0, y: 0 }
         },
         {
+            id: '2',
             label: 'B',
             inputs: [
                 { id: 'b', label: 'Field value' },
@@ -45,6 +47,7 @@ const generateWorkbench = (workbench, area, editor) => {
     const portIdToNodeMap = {};
     workbench.nodes.forEach((node) => __awaiter(void 0, void 0, void 0, function* () {
         const newNode = new rete_1.ClassicPreset.Node(node.label);
+        newNode.id = node.id;
         node.inputs.forEach(input => {
             portIdToNodeMap[input.id] = newNode;
             newNode.addInput(input.id, new rete_1.ClassicPreset.Input(socket, input.label));
