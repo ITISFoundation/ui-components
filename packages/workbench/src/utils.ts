@@ -1,6 +1,7 @@
 import { AreaPlugin } from "rete-area-plugin";
 import { AreaExtra, Schemes, Workbench } from "./types";
 import { ClassicPreset, NodeEditor } from "rete";
+import { Transform } from "rete-area-plugin/_types/area";
 
 export const initialWorkbench: Workbench = {
   nodes: [
@@ -26,16 +27,27 @@ export const initialWorkbench: Workbench = {
         { id: 'd', label: 'Out' }
       ],
       position: { x: 270, y: 0 }
+    },
+    {
+      id: '3',
+      label: 'Third node',
+      inputs: [
+        { id: 'yu', label: 'Ch' }
+      ],
+      outputs: [],
+      position: { x: 500, y: 40 }
     }
   ],
   connections: [
     { orig: 'a', dest: 'b' },
-    { orig: 'a', dest: 'c' }
+    { orig: 'a', dest: 'c' },
+    { orig: 'd', dest: 'yu' }
   ]
 }
 
 export const generateWorkbench = (
   workbench: Workbench,
+  areaTransform: Transform,
   area: AreaPlugin<Schemes, AreaExtra>,
   editor: NodeEditor<Schemes>
 ) => {
@@ -63,4 +75,7 @@ export const generateWorkbench = (
       conn.dest
     ))
   })
+  area.area.zoom(areaTransform.k)
+  area.area.translate(areaTransform.x, areaTransform.y)
+  console.log('generate', areaTransform)
 }

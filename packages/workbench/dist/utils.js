@@ -35,14 +35,24 @@ exports.initialWorkbench = {
                 { id: 'd', label: 'Out' }
             ],
             position: { x: 270, y: 0 }
+        },
+        {
+            id: '3',
+            label: 'Third node',
+            inputs: [
+                { id: 'yu', label: 'Ch' }
+            ],
+            outputs: [],
+            position: { x: 500, y: 40 }
         }
     ],
     connections: [
         { orig: 'a', dest: 'b' },
-        { orig: 'a', dest: 'c' }
+        { orig: 'a', dest: 'c' },
+        { orig: 'd', dest: 'yu' }
     ]
 };
-const generateWorkbench = (workbench, area, editor) => {
+const generateWorkbench = (workbench, areaTransform, area, editor) => {
     const socket = new rete_1.ClassicPreset.Socket('socket');
     const portIdToNodeMap = {};
     workbench.nodes.forEach((node) => __awaiter(void 0, void 0, void 0, function* () {
@@ -62,6 +72,9 @@ const generateWorkbench = (workbench, area, editor) => {
     workbench.connections.forEach((conn) => __awaiter(void 0, void 0, void 0, function* () {
         yield editor.addConnection(new rete_1.ClassicPreset.Connection(portIdToNodeMap[conn.orig], conn.orig, portIdToNodeMap[conn.dest], conn.dest));
     }));
+    area.area.zoom(areaTransform.k);
+    area.area.translate(areaTransform.x, areaTransform.y);
+    console.log('generate', areaTransform);
 };
 exports.generateWorkbench = generateWorkbench;
 //# sourceMappingURL=utils.js.map

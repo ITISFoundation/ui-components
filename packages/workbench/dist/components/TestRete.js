@@ -23,7 +23,7 @@ const material_1 = require("@mui/material");
 const Connection_1 = __importDefault(require("./Connection"));
 const Socket_1 = __importDefault(require("./Socket"));
 const utils_1 = require("../utils");
-const createEditor = (container, theme, socketSelectionState, workbenchSetter) => __awaiter(void 0, void 0, void 0, function* () {
+const createEditor = (container, theme, socketSelectionState, workbenchSetter, areaTransformSetter) => __awaiter(void 0, void 0, void 0, function* () {
     const editor = new rete_1.NodeEditor();
     const area = new rete_area_plugin_1.AreaPlugin(container);
     const render = new rete_react_plugin_1.ReactPlugin({ createRoot: client_1.createRoot });
@@ -38,9 +38,11 @@ const createEditor = (container, theme, socketSelectionState, workbenchSetter) =
     editor.use(area);
     area.use(render);
     let translateTimer;
+    let zoomTimer;
+    let panTimer;
     area.addPipe(context => {
+        // Saveworkbench when moving nodes and zooming panning the area
         if (context.type === 'nodetranslated') {
-            // Save positions
             clearTimeout(translateTimer);
             translateTimer = setTimeout(() => {
                 const { data: { id, position } } = context;
@@ -54,25 +56,48 @@ const createEditor = (container, theme, socketSelectionState, workbenchSetter) =
                 });
             }, 200);
         }
+        if (context.type === 'zoomed') {
+            clearTimeout(zoomTimer);
+            if (context.data.source === 'dblclick') {
+                area.area.zoom(1);
+                area.area.translate(0, 0);
+                return;
+            }
+            zoomTimer = setTimeout(() => {
+                console.log('zoomed', context);
+                areaTransformSetter(context.data.previous);
+            }, 200);
+        }
+        if (context.type === 'translated') {
+            clearTimeout(panTimer);
+            panTimer = setTimeout(() => {
+                console.log('translated', context.data.position);
+                areaTransformSetter(prevTransform => (Object.assign(Object.assign({}, prevTransform), context.data.position)));
+            }, 200);
+        }
         return context;
     });
     return {
         destroy: () => area.destroy(),
-        create: (workbench) => (0, utils_1.generateWorkbench)(workbench, area, editor)
+        create: (workbench, areaTransform) => (0, utils_1.generateWorkbench)(workbench, areaTransform, area, editor)
     };
 });
 const TestRete = () => {
     const theme = (0, material_1.useTheme)();
     const socketSelectionState = (0, react_1.useState)('');
     const [workbench, setWorkbench] = (0, react_1.useState)(utils_1.initialWorkbench);
-    const createCb = (0, react_1.useCallback)((containerEl) => createEditor(containerEl, theme, socketSelectionState, setWorkbench), [theme, socketSelectionState[0]]);
+    const [areaTransform, setAreaTransform] = (0, react_1.useState)({ x: 0, y: 0, k: 1 });
+    const createCb = (0, react_1.useCallback)((containerEl) => createEditor(containerEl, theme, socketSelectionState, setWorkbench, setAreaTransform), [theme, socketSelectionState[0]]);
     const [ref, editor] = (0, rete_react_plugin_1.useRete)(createCb);
     (0, react_1.useEffect)(() => {
         if (editor) {
-            editor.create(workbench);
+            editor.create(workbench, areaTransform);
             return editor.destroy;
         }
     }, [editor]);
+    (0, react_1.useEffect)(() => {
+        console.log('areachanged', areaTransform);
+    }, [areaTransform]);
     return ((0, jsx_runtime_1.jsx)("div", { style: { height: '100vh' }, children: (0, jsx_runtime_1.jsx)("div", { ref: ref, style: { position: 'relative', width: '100%', height: '100%', padding: '18px' } }) }));
 };
 exports.default = TestRete;

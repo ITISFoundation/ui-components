@@ -1,5 +1,5 @@
-import { ClassicPreset, GetSchemes } from "rete";
-import { ReactArea2D } from "rete-react-plugin";
+import { ClassicPreset, GetSchemes } from 'rete';
+import { ReactArea2D } from 'rete-react-plugin';
 export type Port = {
     id: string;
     label: string;
