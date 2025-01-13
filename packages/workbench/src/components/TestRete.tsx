@@ -66,14 +66,12 @@ const createEditor = async (
         return
       }
       zoomTimer = setTimeout(() => {
-        console.log('zoomed', context)
         areaTransformSetter(context.data.previous)
       }, 200)
     }
     if (context.type === 'translated') {
       clearTimeout(panTimer)
       panTimer = setTimeout(() => {
-        console.log('translated', context.data.position)
         areaTransformSetter(prevTransform => ({
           ...prevTransform,
           ...context.data.position
@@ -102,9 +100,6 @@ const TestRete = () => {
       return editor.destroy
     }
   }, [editor])
-  useEffect(() => {
-    console.log('areachanged', areaTransform)
-  }, [areaTransform])
   return (
     <div style={{ height: '100vh' }}>
       <div ref={ref} style={{ position: 'relative', width: '100%', height: '100%', padding: '18px' }}/>

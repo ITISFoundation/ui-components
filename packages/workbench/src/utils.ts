@@ -77,5 +77,4 @@ export const generateWorkbench = (
   })
   area.area.zoom(areaTransform.k)
   area.area.translate(areaTransform.x, areaTransform.y)
-  console.log('generate', areaTransform)
 }

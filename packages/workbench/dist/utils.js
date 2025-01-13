@@ -74,7 +74,6 @@ const generateWorkbench = (workbench, areaTransform, area, editor) => {
     }));
     area.area.zoom(areaTransform.k);
     area.area.translate(areaTransform.x, areaTransform.y);
-    console.log('generate', areaTransform);
 };
 exports.generateWorkbench = generateWorkbench;
 //# sourceMappingURL=utils.js.map

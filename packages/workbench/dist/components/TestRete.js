@@ -64,14 +64,12 @@ const createEditor = (container, theme, socketSelectionState, workbenchSetter, a
                 return;
             }
             zoomTimer = setTimeout(() => {
-                console.log('zoomed', context);
                 areaTransformSetter(context.data.previous);
             }, 200);
         }
         if (context.type === 'translated') {
             clearTimeout(panTimer);
             panTimer = setTimeout(() => {
-                console.log('translated', context.data.position);
                 areaTransformSetter(prevTransform => (Object.assign(Object.assign({}, prevTransform), context.data.position)));
             }, 200);
         }
@@ -95,9 +93,6 @@ const TestRete = () => {
             return editor.destroy;
         }
     }, [editor]);
-    (0, react_1.useEffect)(() => {
-        console.log('areachanged', areaTransform);
-    }, [areaTransform]);
     return ((0, jsx_runtime_1.jsx)("div", { style: { height: '100vh' }, children: (0, jsx_runtime_1.jsx)("div", { ref: ref, style: { position: 'relative', width: '100%', height: '100%', padding: '18px' } }) }));
 };
 exports.default = TestRete;
