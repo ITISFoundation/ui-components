@@ -22,7 +22,7 @@ const Node = <Scheme extends ClassicScheme>(props: Props<Scheme> & React.Compone
       if (i < ins.length && ins[i][1]) {
         const [key, input] = ins[i]
         res.push(
-          <div key={key} className='wb-node-socket wb-socket-input' onClick={e => onSocketClick(e, key)}>
+          <div key={key} className={`wb-node-socket wb-socket-input ${key === selectedSocket ? 'selected' : ''}`} onClick={e => onSocketClick(e, key)}>
             <RefSocket
               nodeId={id}
               name='wb-socket input-socket'
@@ -33,7 +33,7 @@ const Node = <Scheme extends ClassicScheme>(props: Props<Scheme> & React.Compone
               payload={input.socket}
             />
             {/* @ts-ignore */}
-            <Typography variant='caption' className='wb-node-port-label'>{input.label} {selectedSocket}</Typography>
+            <Typography variant='caption' className='wb-node-port-label'>{input.label}</Typography>
           </div>
         )
       } else {
@@ -42,9 +42,9 @@ const Node = <Scheme extends ClassicScheme>(props: Props<Scheme> & React.Compone
       if (i < outs.length && outs[i][1]) {
         const [key, output] = outs[i]
         res.push(
-          <div key={key} className='wb-node-socket wb-socket-output' onClick={e => onSocketClick(e, key)}>
+          <div key={key} className={`wb-node-socket wb-socket-output ${key === selectedSocket ? 'selected' : ''}`} onClick={e => onSocketClick(e, key)}>
             {/* @ts-ignore */}
-            <Typography variant='caption' className='wb-node-port-label'>{output.label} {selectedSocket}</Typography>
+            <Typography variant='caption' className='wb-node-port-label'>{output.label}</Typography>
             <RefSocket
               nodeId={id}
               name='wb-socket output-socket'
@@ -87,6 +87,12 @@ export default styled(Node)(({ theme }) => `
       align-items: center;
       &.wb-socket-output {
         justify-content: right;
+      }
+      &.selected .wb-inner-socket {
+        border: 2px solid ${theme.palette.primary.dark}
+      }
+      &.selected .wb-node-port-label {
+        color: ${theme.palette.primary.dark}
       }
       & > .wb-socket {
         position: absolute;

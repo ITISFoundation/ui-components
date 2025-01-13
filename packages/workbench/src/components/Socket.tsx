@@ -5,9 +5,9 @@ import { ClassicPreset } from "rete"
 const Socket = <T extends ClassicPreset.Socket>(props: React.ComponentPropsWithoutRef<'div'> & {
   data: T
 }) => {
-  const { data, ...rest } = props
+  const { data, className, ...rest } = props
   return (
-    <div {...rest}/>
+    <div className={`wb-inner-socket ${className}`} {...rest}/>
   )
 }
 

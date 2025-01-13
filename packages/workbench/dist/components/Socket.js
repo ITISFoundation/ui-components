@@ -14,8 +14,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const jsx_runtime_1 = require("react/jsx-runtime");
 const material_1 = require("@mui/material");
 const Socket = (props) => {
-    const { data } = props, rest = __rest(props, ["data"]);
-    return ((0, jsx_runtime_1.jsx)("div", Object.assign({}, rest)));
+    const { data, className } = props, rest = __rest(props, ["data", "className"]);
+    return ((0, jsx_runtime_1.jsx)("div", Object.assign({ className: `wb-inner-socket ${className}` }, rest)));
 };
 exports.default = (0, material_1.styled)(Socket)(({ theme }) => `
   display: inline-block;
