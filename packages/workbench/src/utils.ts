@@ -12,7 +12,8 @@ export const initialWorkbench: Workbench = {
         { id: 'x', label: 'In' }
       ],
       outputs: [
-        { id: 'a', label: 'E(m,a)' }
+        { id: 'a', label: 'E(m,a)' },
+        { id: 'f', label: 'F(b)' }
       ],
       position: { x: 0, y: 0 }
     },
@@ -24,7 +25,8 @@ export const initialWorkbench: Workbench = {
         { id: 'c', label: 'Power (W)' }
       ],
       outputs: [
-        { id: 'd', label: 'Out' }
+        { id: 'd', label: 'Out' },
+        { id: 'd2', label: 'Out2' }
       ],
       position: { x: 270, y: 0 }
     },
@@ -36,12 +38,22 @@ export const initialWorkbench: Workbench = {
       ],
       outputs: [],
       position: { x: 500, y: 40 }
+    },
+    {
+      id: '4',
+      label: 'Plotter',
+      inputs: [
+        { id: 'p', label: 'D' }
+      ],
+      outputs: [],
+      position: { x: 500, y: 140 }
     }
   ],
   connections: [
     { orig: 'a', dest: 'b' },
     { orig: 'a', dest: 'c' },
-    { orig: 'd', dest: 'yu' }
+    { orig: 'd', dest: 'yu' },
+    { orig: 'f', dest: 'p' }
   ]
 }
 
