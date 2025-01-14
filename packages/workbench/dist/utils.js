@@ -8,63 +8,33 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.generateWorkbench = exports.initialWorkbench = void 0;
-const rete_1 = require("rete");
-exports.initialWorkbench = {
-    nodes: [
-        {
-            id: '1',
-            label: 'Node #1',
-            inputs: [
-                { id: 'x', label: 'In' }
-            ],
-            outputs: [
-                { id: 'a', label: 'E(m,a)' },
-                { id: 'f', label: 'F(b)' }
-            ],
-            position: { x: 0, y: 0 }
-        },
-        {
-            id: '2',
-            label: 'B',
-            inputs: [
-                { id: 'b', label: 'Field value' },
-                { id: 'c', label: 'Power (W)' }
-            ],
-            outputs: [
-                { id: 'd', label: 'Out' },
-                { id: 'd2', label: 'Out2' }
-            ],
-            position: { x: 270, y: 0 }
-        },
-        {
-            id: '3',
-            label: 'Third node',
-            inputs: [
-                { id: 'yu', label: 'Ch' }
-            ],
-            outputs: [],
-            position: { x: 500, y: 40 }
-        },
-        {
-            id: '4',
-            label: 'Plotter',
-            inputs: [
-                { id: 'p', label: 'D' }
-            ],
-            outputs: [],
-            position: { x: 500, y: 140 }
-        }
-    ],
-    connections: [
-        { orig: 'a', dest: 'b' },
-        { orig: 'a', dest: 'c' },
-        { orig: 'd', dest: 'yu' },
-        { orig: 'f', dest: 'p' }
-    ]
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.generateWorkbench = exports.elkLayoutFromWorkbench = exports.elk = void 0;
+const rete_1 = require("rete");
+const elk_bundled_js_1 = __importDefault(require("elkjs/lib/elk.bundled.js"));
+exports.elk = new elk_bundled_js_1.default();
+const elkLayoutFromWorkbench = (wb) => {
+    const children = [];
+    const edges = [];
+    wb.nodes.forEach(({ id }) => children.push({ id, width: 180, height: 120 }));
+    wb.connections.forEach(({ orig, dest }) => {
+        const origNode = wb.nodes.find(node => node.outputs.some(port => port.id === orig));
+        const destNode = wb.nodes.find(node => node.inputs.some(port => port.id === dest));
+        edges.push({ id: orig + dest, sources: origNode ? [origNode.id] : [], targets: destNode ? [destNode.id] : [] });
+    });
+    return {
+        id: 'root',
+        layoutOptions: { 'elk.algorithm': 'layered' },
+        children,
+        edges
+    };
+};
+exports.elkLayoutFromWorkbench = elkLayoutFromWorkbench;
 const generateWorkbench = (workbench, areaTransform, area, editor) => {
+    // console.log(area, editor)
     const socket = new rete_1.ClassicPreset.Socket('socket');
     const portIdToNodeMap = {};
     workbench.nodes.forEach((node) => __awaiter(void 0, void 0, void 0, function* () {
@@ -79,7 +49,9 @@ const generateWorkbench = (workbench, areaTransform, area, editor) => {
             newNode.addOutput(output.id, new rete_1.ClassicPreset.Output(socket, output.label));
         });
         yield editor.addNode(newNode);
-        yield area.translate(newNode.id, node.position);
+        if (node.position) {
+            yield area.translate(newNode.id, node.position);
+        }
     }));
     workbench.connections.forEach((conn) => __awaiter(void 0, void 0, void 0, function* () {
         yield editor.addConnection(new rete_1.ClassicPreset.Connection(portIdToNodeMap[conn.orig], conn.orig, portIdToNodeMap[conn.dest], conn.dest));

@@ -8,6 +8,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -77,13 +88,15 @@ const createEditor = (container, theme, socketSelectionState, workbenchSetter, a
     });
     return {
         destroy: () => area.destroy(),
-        create: (workbench, areaTransform) => (0, utils_1.generateWorkbench)(workbench, areaTransform, area, editor)
+        create: (workbench, areaTransform) => (0, utils_1.generateWorkbench)(workbench, areaTransform, area, editor),
+        updatePositions: (workbench) => workbench.nodes.forEach(node => node.position && area.translate(node.id, node.position))
     };
 });
-const TestRete = () => {
+const Workbench = (props) => {
+    const { workbench: wb } = props, rest = __rest(props, ["workbench"]);
     const theme = (0, material_1.useTheme)();
     const socketSelectionState = (0, react_1.useState)('');
-    const [workbench, setWorkbench] = (0, react_1.useState)(utils_1.initialWorkbench);
+    const [workbench, setWorkbench] = (0, react_1.useState)(wb);
     const [areaTransform, setAreaTransform] = (0, react_1.useState)({ x: 0, y: 0, k: 1 });
     const createCb = (0, react_1.useCallback)((containerEl) => createEditor(containerEl, theme, socketSelectionState, setWorkbench, setAreaTransform), [theme, socketSelectionState[0]]);
     const [ref, editor] = (0, rete_react_plugin_1.useRete)(createCb);
@@ -93,7 +106,34 @@ const TestRete = () => {
             return editor.destroy;
         }
     }, [editor]);
-    return ((0, jsx_runtime_1.jsx)("div", { style: { height: '100vh' }, children: (0, jsx_runtime_1.jsx)("div", { ref: ref, style: { position: 'relative', width: '100%', height: '100%', padding: '18px' } }) }));
+    const autoArrangeHandler = () => {
+        const newWorkbench = Object.assign({}, workbench);
+        utils_1.elk.layout((0, utils_1.elkLayoutFromWorkbench)(newWorkbench))
+            .then(({ children }) => {
+            children === null || children === void 0 ? void 0 : children.forEach((elkNode) => __awaiter(void 0, void 0, void 0, function* () {
+                const nodeIndex = newWorkbench.nodes.findIndex(node => node.id === elkNode.id);
+                if (nodeIndex > -1 && elkNode.x && elkNode.y) {
+                    newWorkbench.nodes[nodeIndex].position = {
+                        x: elkNode.x,
+                        y: elkNode.y
+                    };
+                }
+            }));
+            editor === null || editor === void 0 ? void 0 : editor.updatePositions(newWorkbench);
+            setWorkbench(newWorkbench);
+        })
+            .catch(console.error);
+    };
+    return ((0, jsx_runtime_1.jsx)("div", Object.assign({}, rest, { children: (0, jsx_runtime_1.jsxs)("div", { className: 'wb-inner-container', children: [(0, jsx_runtime_1.jsx)("div", { children: (0, jsx_runtime_1.jsx)(material_1.Button, { onClick: autoArrangeHandler, children: "Auto-arrange" }) }), (0, jsx_runtime_1.jsx)("div", { ref: ref, className: 'wb-workbench', style: { position: 'relative', padding: '18px' } })] }) })));
 };
-exports.default = TestRete;
-//# sourceMappingURL=TestRete.js.map
+exports.default = (0, material_1.styled)(Workbench) `
+  & > .wb-inner-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    & > .wb-workbench {
+      flex: 1
+    }
+  }
+`;
+//# sourceMappingURL=Workbench.js.map

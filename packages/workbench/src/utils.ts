@@ -2,59 +2,25 @@ import { AreaPlugin } from "rete-area-plugin";
 import { AreaExtra, Schemes, Workbench } from "./types";
 import { ClassicPreset, NodeEditor } from "rete";
 import { Transform } from "rete-area-plugin/_types/area";
+import ElkConstructor, { ElkNode } from "elkjs/lib/elk.bundled.js";
 
-export const initialWorkbench: Workbench = {
-  nodes: [
-    {
-      id: '1',
-      label: 'Node #1',
-      inputs: [
-        { id: 'x', label: 'In' }
-      ],
-      outputs: [
-        { id: 'a', label: 'E(m,a)' },
-        { id: 'f', label: 'F(b)' }
-      ],
-      position: { x: 0, y: 0 }
-    },
-    {
-      id: '2',
-      label: 'B',
-      inputs: [
-        { id: 'b', label: 'Field value' },
-        { id: 'c', label: 'Power (W)' }
-      ],
-      outputs: [
-        { id: 'd', label: 'Out' },
-        { id: 'd2', label: 'Out2' }
-      ],
-      position: { x: 270, y: 0 }
-    },
-    {
-      id: '3',
-      label: 'Third node',
-      inputs: [
-        { id: 'yu', label: 'Ch' }
-      ],
-      outputs: [],
-      position: { x: 500, y: 40 }
-    },
-    {
-      id: '4',
-      label: 'Plotter',
-      inputs: [
-        { id: 'p', label: 'D' }
-      ],
-      outputs: [],
-      position: { x: 500, y: 140 }
-    }
-  ],
-  connections: [
-    { orig: 'a', dest: 'b' },
-    { orig: 'a', dest: 'c' },
-    { orig: 'd', dest: 'yu' },
-    { orig: 'f', dest: 'p' }
-  ]
+export const elk = new ElkConstructor()
+
+export const elkLayoutFromWorkbench = (wb: Workbench): ElkNode => {
+  const children: ElkNode['children'] = []
+  const edges: ElkNode['edges'] = []
+  wb.nodes.forEach(({ id }) => children.push({ id, width: 180, height: 120 }))
+  wb.connections.forEach(({ orig, dest }) => {
+    const origNode = wb.nodes.find(node => node.outputs.some(port => port.id === orig))
+    const destNode = wb.nodes.find(node => node.inputs.some(port => port.id === dest))
+    edges.push({ id: orig + dest, sources: origNode ? [origNode.id] : [], targets: destNode ? [destNode.id] : [] })
+  })
+  return {
+    id: 'root',
+    layoutOptions: { 'elk.algorithm': 'layered' },
+    children,
+    edges
+  }
 }
 
 export const generateWorkbench = (
@@ -63,6 +29,7 @@ export const generateWorkbench = (
   area: AreaPlugin<Schemes, AreaExtra>,
   editor: NodeEditor<Schemes>
 ) => {
+  // console.log(area, editor)
   const socket = new ClassicPreset.Socket('socket')
   const portIdToNodeMap: { [key: string]: ClassicPreset.Node } = {}
   workbench.nodes.forEach(async node => {
@@ -77,7 +44,9 @@ export const generateWorkbench = (
       newNode.addOutput(output.id, new ClassicPreset.Output(socket, output.label))
     })
     await editor.addNode(newNode)
-    await area.translate(newNode.id, node.position)
+    if (node.position) {
+      await area.translate(newNode.id, node.position)
+    }
   })
   workbench.connections.forEach(async conn => {
     await editor.addConnection(new ClassicPreset.Connection(

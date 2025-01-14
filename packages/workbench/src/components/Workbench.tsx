@@ -1,14 +1,14 @@
-import { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { NodeEditor } from 'rete'
 import { ReactPlugin, Presets, useRete } from 'rete-react-plugin'
 import { createRoot } from 'react-dom/client'
 import { AreaPlugin } from 'rete-area-plugin'
 import Node from './Node'
-import { Theme, useTheme } from '@mui/material'
+import { Button, styled, Theme, useTheme } from '@mui/material'
 import Connection from './Connection'
 import Socket from './Socket'
 import { AreaExtra, Schemes, Workbench } from '../types'
-import { generateWorkbench, initialWorkbench } from '../utils'
+import { elk, elkLayoutFromWorkbench, generateWorkbench } from '../utils'
 import { Transform } from 'rete-area-plugin/_types/area'
 
 const createEditor = async (
@@ -37,7 +37,7 @@ const createEditor = async (
   let zoomTimer: NodeJS.Timeout
   let panTimer: NodeJS.Timeout
   area.addPipe(context => {
-    // Saveworkbench when moving nodes and zooming panning the area
+    // Save workbench when moving nodes and zooming panning the area
     if (context.type === 'nodetranslated') {
       clearTimeout(translateTimer)
       translateTimer = setTimeout(() => {
@@ -83,14 +83,18 @@ const createEditor = async (
 
   return {
     destroy: () => area.destroy(),
-    create: (workbench: Workbench, areaTransform: Transform) => generateWorkbench(workbench, areaTransform, area, editor)
+    create: (workbench: Workbench, areaTransform: Transform) => generateWorkbench(workbench, areaTransform, area, editor),
+    updatePositions: (workbench: Workbench) => workbench.nodes.forEach(node => node.position && area.translate(node.id, node.position))
   }
 }
 
-const TestRete = () => {
+const Workbench = (props: {
+  workbench: Workbench
+} & React.ComponentPropsWithoutRef<'div'>) => {
+  const { workbench: wb, ...rest } = props
   const theme = useTheme()
   const socketSelectionState = useState<string>('')
-  const [workbench, setWorkbench] = useState<Workbench>(initialWorkbench)
+  const [workbench, setWorkbench] = useState<Workbench>(wb)
   const [areaTransform, setAreaTransform] = useState<Transform>({ x: 0, y: 0, k: 1 })
   const createCb = useCallback((containerEl: HTMLElement) => createEditor(containerEl, theme, socketSelectionState, setWorkbench, setAreaTransform), [theme, socketSelectionState[0]])
   const [ref, editor] = useRete(createCb)
@@ -100,11 +104,43 @@ const TestRete = () => {
       return editor.destroy
     }
   }, [editor])
+  const autoArrangeHandler = () => {
+    const newWorkbench = {...workbench}
+    elk.layout(elkLayoutFromWorkbench(newWorkbench))
+      .then(({ children }) => {
+        children?.forEach(async elkNode => {
+          const nodeIndex = newWorkbench.nodes.findIndex(node => node.id === elkNode.id)
+          if (nodeIndex > -1 && elkNode.x && elkNode.y) {
+            newWorkbench.nodes[nodeIndex].position = {
+              x: elkNode.x,
+              y: elkNode.y
+            }
+          }
+        })
+        editor?.updatePositions(newWorkbench)
+        setWorkbench(newWorkbench)
+      })
+      .catch(console.error)
+  }
   return (
-    <div style={{ height: '100vh' }}>
-      <div ref={ref} style={{ position: 'relative', width: '100%', height: '100%', padding: '18px' }}/>
+    <div {...rest}>
+      <div className='wb-inner-container'>
+        <div>
+          <Button onClick={autoArrangeHandler}>Auto-arrange</Button>
+        </div>
+        <div ref={ref} className='wb-workbench' style={{ position: 'relative', padding: '18px' }}/>
+      </div>
     </div>
   )
 }
 
-export default TestRete
+export default styled(Workbench)`
+  & > .wb-inner-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    & > .wb-workbench {
+      flex: 1
+    }
+  }
+`

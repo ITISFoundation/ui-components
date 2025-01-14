@@ -9,7 +9,7 @@ export type Node = {
     label: string;
     inputs: Port[];
     outputs: Port[];
-    position: {
+    position?: {
         x: number;
         y: number;
     };
