@@ -19,11 +19,18 @@ exports.elk = new elk_bundled_js_1.default();
 const elkLayoutFromWorkbench = (wb) => {
     const children = [];
     const edges = [];
-    wb.nodes.forEach(({ id }) => children.push({ id, width: 180, height: 120 }));
+    wb.nodes.forEach(({ id, outputs, inputs }) => children.push({
+        id,
+        width: 180,
+        height: 120,
+        ports: [...inputs.map((p, index) => ({ id: p.id, y: -index })), ...outputs.map((o, index) => ({ id: o.id, y: -index }))]
+    }));
     wb.connections.forEach(({ orig, dest }) => {
-        const origNode = wb.nodes.find(node => node.outputs.some(port => port.id === orig));
-        const destNode = wb.nodes.find(node => node.inputs.some(port => port.id === dest));
-        edges.push({ id: orig + dest, sources: origNode ? [origNode.id] : [], targets: destNode ? [destNode.id] : [] });
+        edges.push({
+            id: `${orig}-${dest}`,
+            sources: [orig],
+            targets: [dest]
+        });
     });
     return {
         id: 'root',

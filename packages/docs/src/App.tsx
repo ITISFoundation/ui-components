@@ -53,7 +53,8 @@ export const initialWorkbench: WorkbenchT = {
     { orig: 'a', dest: 'b' },
     { orig: 'a', dest: 'c' },
     { orig: 'd', dest: 'yu' },
-    { orig: 'f', dest: 'p' }
+    { orig: 'f', dest: 'p' },
+    // { orig: 'd2', dest: 'p' }
   ]
 }
 
