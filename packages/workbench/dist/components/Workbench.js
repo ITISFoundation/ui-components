@@ -89,7 +89,8 @@ const createEditor = (container, theme, socketSelectionState, workbenchSetter, a
     return {
         destroy: () => area.destroy(),
         create: (workbench, areaTransform) => (0, utils_1.generateWorkbench)(workbench, areaTransform, area, editor),
-        updatePositions: (workbench) => workbench.nodes.forEach(node => node.position && area.translate(node.id, node.position))
+        updatePositions: (workbench) => workbench.nodes.forEach(node => node.position && area.translate(node.id, node.position)),
+        autoArrange: (workbench) => (0, utils_1.autoArrange)(workbench, area)
     };
 });
 const Workbench = (props) => {
@@ -107,22 +108,10 @@ const Workbench = (props) => {
         }
     }, [editor]);
     const autoArrangeHandler = () => {
-        const newWorkbench = Object.assign({}, workbench);
-        utils_1.elk.layout((0, utils_1.elkLayoutFromWorkbench)(newWorkbench))
-            .then(({ children }) => {
-            children === null || children === void 0 ? void 0 : children.forEach((elkNode) => __awaiter(void 0, void 0, void 0, function* () {
-                const nodeIndex = newWorkbench.nodes.findIndex(node => node.id === elkNode.id);
-                if (nodeIndex > -1 && elkNode.x && elkNode.y) {
-                    newWorkbench.nodes[nodeIndex].position = {
-                        x: elkNode.x,
-                        y: elkNode.y
-                    };
-                }
-            }));
-            editor === null || editor === void 0 ? void 0 : editor.updatePositions(newWorkbench);
+        editor === null || editor === void 0 ? void 0 : editor.autoArrange(workbench).then(newWorkbench => {
+            editor.updatePositions(newWorkbench);
             setWorkbench(newWorkbench);
-        })
-            .catch(console.error);
+        }).catch(console.error);
     };
     return ((0, jsx_runtime_1.jsx)("div", Object.assign({}, rest, { children: (0, jsx_runtime_1.jsxs)("div", { className: 'wb-inner-container', children: [(0, jsx_runtime_1.jsx)("div", { children: (0, jsx_runtime_1.jsx)(material_1.Button, { onClick: autoArrangeHandler, children: "Auto-arrange" }) }), (0, jsx_runtime_1.jsx)("div", { ref: ref, className: 'wb-workbench', style: { position: 'relative', padding: '18px' } })] }) })));
 };

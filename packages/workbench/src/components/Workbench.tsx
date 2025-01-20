@@ -8,7 +8,7 @@ import { Button, styled, Theme, useTheme } from '@mui/material'
 import Connection from './Connection'
 import Socket from './Socket'
 import { AreaExtra, Schemes, Workbench } from '../types'
-import { elk, elkLayoutFromWorkbench, generateWorkbench } from '../utils'
+import { autoArrange, elk, elkLayoutFromWorkbench, generateWorkbench } from '../utils'
 import { Transform } from 'rete-area-plugin/_types/area'
 
 const createEditor = async (
@@ -84,7 +84,8 @@ const createEditor = async (
   return {
     destroy: () => area.destroy(),
     create: (workbench: Workbench, areaTransform: Transform) => generateWorkbench(workbench, areaTransform, area, editor),
-    updatePositions: (workbench: Workbench) => workbench.nodes.forEach(node => node.position && area.translate(node.id, node.position))
+    updatePositions: (workbench: Workbench) => workbench.nodes.forEach(node => node.position && area.translate(node.id, node.position)),
+    autoArrange: (workbench: Workbench) => autoArrange(workbench, area)
   }
 }
 
@@ -105,19 +106,9 @@ const Workbench = (props: {
     }
   }, [editor])
   const autoArrangeHandler = () => {
-    const newWorkbench = {...workbench}
-    elk.layout(elkLayoutFromWorkbench(newWorkbench))
-      .then(({ children }) => {
-        children?.forEach(async elkNode => {
-          const nodeIndex = newWorkbench.nodes.findIndex(node => node.id === elkNode.id)
-          if (nodeIndex > -1 && elkNode.x && elkNode.y) {
-            newWorkbench.nodes[nodeIndex].position = {
-              x: elkNode.x,
-              y: elkNode.y
-            }
-          }
-        })
-        editor?.updatePositions(newWorkbench)
+    editor?.autoArrange(workbench)
+      .then(newWorkbench => {
+        editor.updatePositions(newWorkbench)
         setWorkbench(newWorkbench)
       })
       .catch(console.error)
