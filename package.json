@@ -5,13 +5,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "workbench-start": "npm run build -w packages/workbench -- --watch",
+    "context-start": "npm run build -w packages/material-context -- --watch",
     "docs-start": "npm start -w packages/docs"
   },
   "author": "Ignacio Pascual <4764217+ignapas@users.noreply.github.com>",
   "license": "UNLICENSED",
   "workspaces": [
     "packages/docs",
-    "packages/workbench"
+    "packages/workbench",
+    "packages/material-context"
   ],
   "engines": {
     "node": ">=18"

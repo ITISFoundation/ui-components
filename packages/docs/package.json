@@ -16,6 +16,7 @@
     "@emotion/styled": "^11.14.0",
     "@mui/material": "^5.16.12",
     "@ui-components/workbench": "file:../workbench",
+    "@ui-components/material-context": "file:../material-context",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },

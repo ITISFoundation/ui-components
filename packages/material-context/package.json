@@ -1,0 +1,28 @@
+{
+  "name": "@ui-components/material-context",
+  "version": "1.0.0",
+  "description": "Multilevel context menus built for React using Material UI.",
+  "main": "dist/index.js",
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc --build --clean && tsc --build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ITISFoundation/ui-components.git"
+  },
+  "author": "Ignacio Pascual <4764217+ignapas@users.noreply.github.com>",
+  "license": "UNLICENSED",
+  "peerDependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/material": "^5.16.12",
+    "@types/react": ">=17",
+    "@types/react-dom": ">=17",
+    "react": ">=17",
+    "react-dom": ">=17"
+  }
+}

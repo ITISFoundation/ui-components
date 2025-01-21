@@ -2,6 +2,7 @@ import { Button, createTheme, CssBaseline, PaletteMode, Theme, ThemeProvider } f
 import { Workbench } from '@ui-components/workbench'
 import { Workbench as WorkbenchT } from '@ui-components/workbench/dist/types'
 import { useState } from 'react'
+import { ContextMenu } from '@ui-components/material-context'
 
 export const initialWorkbench: WorkbenchT = {
   nodes: [
@@ -70,6 +71,10 @@ const App = () => {
         <div>
           <Button disabled={theme.palette.mode === 'light'} onClick={() => changeTheme('light')}>Light</Button>
           <Button disabled={theme.palette.mode === 'dark'} onClick={() => changeTheme('dark')}>Dark</Button>
+          <div style={{ height: 30, width: 30, border: `1px solid ${theme.palette.text.primary}` }}></div>
+          <ContextMenu>
+            <div>locoo</div>
+          </ContextMenu>
         </div>
         <Workbench workbench={initialWorkbench} style={{ flex: 1 }}/>
       </div>
