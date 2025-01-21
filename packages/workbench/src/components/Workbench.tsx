@@ -97,7 +97,10 @@ const Workbench = (props: {
   const socketSelectionState = useState<string>('')
   const [workbench, setWorkbench] = useState<Workbench>(wb)
   const [areaTransform, setAreaTransform] = useState<Transform>({ x: 0, y: 0, k: 1 })
-  const createCb = useCallback((containerEl: HTMLElement) => createEditor(containerEl, theme, socketSelectionState, setWorkbench, setAreaTransform), [theme, socketSelectionState[0]])
+  const createCb = useCallback(
+    (containerEl: HTMLElement) => createEditor(containerEl, theme, socketSelectionState, setWorkbench, setAreaTransform),
+    [theme, socketSelectionState[0]]
+  )
   const [ref, editor] = useRete(createCb)
   useEffect(() => {
     if (editor) {
