@@ -5,8 +5,8 @@ import { ContextMenuItemProps } from '../types';
 import ContextMenu, { ContextMenuContext } from './ContextMenu';
 
 const ContextMenuItem = (props: ContextMenuItemProps) => {
-  const { children, checked, icon, title, shortcut, ...rest } = props
-  const { dense } = useContext(ContextMenuContext)
+  const { id, children, checked, icon, title, shortcut, ...rest } = props
+  const { dense, onSelect } = useContext(ContextMenuContext)
   const [anchor, setAnchor] = useState<Element>()
   const ref = useRef(null)
   const setOpen = (open: boolean) => {
@@ -16,8 +16,20 @@ const ContextMenuItem = (props: ContextMenuItemProps) => {
       setAnchor(undefined)
     }
   }
+  const clickHandler = (e: React.MouseEvent) => {
+    if (React.Children.count(children) > 0) {
+      setOpen(true)
+    } else {
+      onSelect && onSelect(e.nativeEvent, id)
+    }
+  }
   return (
-    <MenuItem ref={ref} dense={dense} onClick={() => setOpen(true)} {...rest}>
+    <MenuItem 
+      ref={ref}
+      dense={dense}
+      onClick={clickHandler} 
+      {...rest}
+    >
       <ListItemIcon>
         { checked ? <Check fontSize='small'/> : icon }
       </ListItemIcon>

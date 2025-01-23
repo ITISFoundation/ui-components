@@ -50,8 +50,8 @@ const material_1 = require("@mui/material");
 const react_1 = __importStar(require("react"));
 const ContextMenu_1 = __importStar(require("./ContextMenu"));
 const ContextMenuItem = (props) => {
-    const { children, checked, icon, title, shortcut } = props, rest = __rest(props, ["children", "checked", "icon", "title", "shortcut"]);
-    const { dense } = (0, react_1.useContext)(ContextMenu_1.ContextMenuContext);
+    const { id, children, checked, icon, title, shortcut } = props, rest = __rest(props, ["id", "children", "checked", "icon", "title", "shortcut"]);
+    const { dense, onSelect } = (0, react_1.useContext)(ContextMenu_1.ContextMenuContext);
     const [anchor, setAnchor] = (0, react_1.useState)();
     const ref = (0, react_1.useRef)(null);
     const setOpen = (open) => {
@@ -62,7 +62,15 @@ const ContextMenuItem = (props) => {
             setAnchor(undefined);
         }
     };
-    return ((0, jsx_runtime_1.jsxs)(material_1.MenuItem, Object.assign({ ref: ref, dense: dense, onClick: () => setOpen(true) }, rest, { children: [(0, jsx_runtime_1.jsx)(material_1.ListItemIcon, { children: checked ? (0, jsx_runtime_1.jsx)(icons_material_1.Check, { fontSize: 'small' }) : icon }), (0, jsx_runtime_1.jsxs)(material_1.ListItemText, { className: 'context-item-text', children: [(0, jsx_runtime_1.jsx)("span", { className: 'context-item-title', children: title }), shortcut && (0, jsx_runtime_1.jsx)("span", { className: 'context-item-shortcut', children: shortcut })] }), react_1.default.Children.count(children) > 0 && ((0, jsx_runtime_1.jsx)(ContextMenu_1.default, { open: Boolean(anchor), submenu: true, anchorEl: anchor, onClose: () => setOpen(false), children: children })), (0, jsx_runtime_1.jsx)(material_1.ListItemIcon, { children: react_1.default.Children.count(children) > 0 && ((0, jsx_runtime_1.jsx)(icons_material_1.ArrowRight, {})) })] })));
+    const clickHandler = (e) => {
+        if (react_1.default.Children.count(children) > 0) {
+            setOpen(true);
+        }
+        else {
+            onSelect && onSelect(e.nativeEvent, id);
+        }
+    };
+    return ((0, jsx_runtime_1.jsxs)(material_1.MenuItem, Object.assign({ ref: ref, dense: dense, onClick: clickHandler }, rest, { children: [(0, jsx_runtime_1.jsx)(material_1.ListItemIcon, { children: checked ? (0, jsx_runtime_1.jsx)(icons_material_1.Check, { fontSize: 'small' }) : icon }), (0, jsx_runtime_1.jsxs)(material_1.ListItemText, { className: 'context-item-text', children: [(0, jsx_runtime_1.jsx)("span", { className: 'context-item-title', children: title }), shortcut && (0, jsx_runtime_1.jsx)("span", { className: 'context-item-shortcut', children: shortcut })] }), react_1.default.Children.count(children) > 0 && ((0, jsx_runtime_1.jsx)(ContextMenu_1.default, { open: Boolean(anchor), submenu: true, anchorEl: anchor, onClose: () => setOpen(false), children: children })), (0, jsx_runtime_1.jsx)(material_1.ListItemIcon, { children: react_1.default.Children.count(children) > 0 && ((0, jsx_runtime_1.jsx)(icons_material_1.ArrowRight, {})) })] })));
 };
 exports.default = (0, material_1.styled)(ContextMenuItem)(({ theme }) => `
   & .context-item-text {

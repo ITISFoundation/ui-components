@@ -1,7 +1,7 @@
 import { Button, createTheme, CssBaseline, MenuItem, PaletteMode, Theme, ThemeProvider } from '@mui/material'
 import { Workbench } from '@ui-components/workbench'
 import { Workbench as WorkbenchT } from '@ui-components/workbench/dist/types'
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { ContextMenu, ContextMenuItem } from '@ui-components/material-context'
 
 export const initialWorkbench: WorkbenchT = {
@@ -76,6 +76,7 @@ const App = () => {
           <ContextMenu
             anchorRef={anchor}
             dense
+            onSelect={e => console.log(e.currentTarget)}
           >
             <ContextMenuItem title='Save'/>
             <ContextMenuItem checked title='Close' shortcut='Ctrl+W'/>

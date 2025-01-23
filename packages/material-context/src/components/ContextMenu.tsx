@@ -22,10 +22,11 @@ const ContextMenu = (props: ContextMenuProps) => {
     anchorReference = submenu ? 'anchorEl' : 'anchorPosition',
     anchorOrigin=ANCHOR_ORIGIN_DEFAULT,
     anchorPosition,
+    onSelect,
     ...rest
   } = props
 
-  const [context] = useState<ContextMenuContextValue>({ dense })
+  const [context] = useState<ContextMenuContextValue>({ dense, onSelect })
   const [selfOpen, setSelfOpen] = useState<MenuProps['open']>(false)
   const [selfAnchorPosition, setSelfAnchorPosition] = useState<MenuProps['anchorPosition']>({ top: 0, left: 0 })
 
@@ -36,6 +37,8 @@ const ContextMenu = (props: ContextMenuProps) => {
         const handler = (e: Event) => {
           if (e.type === 'contextmenu') {
             e.preventDefault()
+            const { clientX: left, clientY: top } = e as MouseEvent
+            setSelfAnchorPosition({ top, left })
             setSelfOpen(true)
           }
         }
