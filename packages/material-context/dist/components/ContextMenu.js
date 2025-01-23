@@ -23,10 +23,32 @@ const ANCHOR_ORIGIN_DEFAULT = {
     horizontal: 'right'
 };
 const ContextMenu = (props) => {
-    const { submenu, dense = false, onClose, anchorOrigin = ANCHOR_ORIGIN_DEFAULT } = props, rest = __rest(props, ["submenu", "dense", "onClose", "anchorOrigin"]);
+    const { open, submenu, dense, onClose, anchorRef, anchorReference = submenu ? 'anchorEl' : 'anchorPosition', anchorOrigin = ANCHOR_ORIGIN_DEFAULT, anchorPosition } = props, rest = __rest(props, ["open", "submenu", "dense", "onClose", "anchorRef", "anchorReference", "anchorOrigin", "anchorPosition"]);
     const [context] = (0, react_1.useState)({ dense });
-    const menu = ((0, jsx_runtime_1.jsx)(material_1.Menu, Object.assign({ hideBackdrop: true, disableAutoFocusItem: true, onClose: onClose, anchorOrigin: anchorOrigin }, rest)));
-    return submenu ? menu : ((0, jsx_runtime_1.jsx)(exports.ContextMenuContext.Provider, { value: context, children: (0, jsx_runtime_1.jsx)(material_1.ClickAwayListener, { onClickAway: e => onClose && onClose(e, 'backdropClick'), children: menu }) }));
+    const [selfOpen, setSelfOpen] = (0, react_1.useState)(false);
+    const [selfAnchorPosition, setSelfAnchorPosition] = (0, react_1.useState)({ top: 0, left: 0 });
+    (0, react_1.useEffect)(() => {
+        if (open == null && anchorRef) {
+            const el = anchorRef.current;
+            if (el) {
+                const handler = (e) => {
+                    if (e.type === 'contextmenu') {
+                        e.preventDefault();
+                        setSelfOpen(true);
+                    }
+                };
+                const eventName = submenu ? 'click' : 'contextmenu';
+                el.addEventListener(eventName, handler);
+                return () => el.removeEventListener(eventName, handler);
+            }
+        }
+    }, [open, anchorRef]);
+    const clickAwayHandler = (e) => {
+        setSelfOpen(false);
+        onClose && onClose(e, 'backdropClick');
+    };
+    const menu = ((0, jsx_runtime_1.jsx)(material_1.Menu, Object.assign({ open: open == null ? selfOpen : open, anchorOrigin: anchorOrigin, anchorPosition: anchorPosition == null ? selfAnchorPosition : anchorPosition, anchorReference: anchorReference, hideBackdrop: true, disableAutoFocusItem: true, onClose: onClose }, rest)));
+    return submenu ? menu : ((0, jsx_runtime_1.jsx)(exports.ContextMenuContext.Provider, { value: context, children: (0, jsx_runtime_1.jsx)(material_1.ClickAwayListener, { onClickAway: clickAwayHandler, children: menu }) }));
 };
 exports.default = (0, material_1.styled)(ContextMenu) `
   pointer-events: none;

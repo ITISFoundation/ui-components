@@ -1,14 +1,10 @@
 import { ArrowRight, Check } from '@mui/icons-material';
 import { ListItemIcon, ListItemText, MenuItem, MenuItemProps, styled } from '@mui/material';
 import React, { useContext, useRef, useState } from 'react';
+import { ContextMenuItemProps } from '../types';
 import ContextMenu, { ContextMenuContext } from './ContextMenu';
 
-const ContextMenuItem = (props: MenuItemProps & {
-  title: string
-  shortcut?: string
-  checked?: boolean
-  icon?: React.ReactNode
-}) => {
+const ContextMenuItem = (props: ContextMenuItemProps) => {
   const { children, checked, icon, title, shortcut, ...rest } = props
   const { dense } = useContext(ContextMenuContext)
   const [anchor, setAnchor] = useState<Element>()

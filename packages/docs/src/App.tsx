@@ -1,7 +1,7 @@
 import { Button, createTheme, CssBaseline, MenuItem, PaletteMode, Theme, ThemeProvider } from '@mui/material'
 import { Workbench } from '@ui-components/workbench'
 import { Workbench as WorkbenchT } from '@ui-components/workbench/dist/types'
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { ContextMenu, ContextMenuItem } from '@ui-components/material-context'
 
 export const initialWorkbench: WorkbenchT = {
@@ -61,13 +61,9 @@ export const initialWorkbench: WorkbenchT = {
 
 const App = () => {
   const [theme, setTheme] = useState<Theme>(createTheme({ palette: { mode: 'light' }}))
-  const [anchor, setAnchor] = useState<Element>()
+  const anchor = useRef(null)
   const changeTheme = (mode: PaletteMode) => {
     setTheme(createTheme({ palette: { mode }}))
-  }
-  const contextHandler = (e: React.MouseEvent) => {
-    e.preventDefault()
-    setAnchor(e.currentTarget)
   }
   return (
     <ThemeProvider theme={theme}>
@@ -76,11 +72,9 @@ const App = () => {
         <div>
           <Button disabled={theme.palette.mode === 'light'} onClick={() => changeTheme('light')}>Light</Button>
           <Button disabled={theme.palette.mode === 'dark'} onClick={() => changeTheme('dark')}>Dark</Button>
-          <div onContextMenu={contextHandler} style={{ height: 30, width: 30, border: `1px solid ${theme.palette.text.primary}` }}></div>
+          <div ref={anchor} style={{ height: 30, width: 30, border: `1px solid ${theme.palette.text.primary}` }}></div>
           <ContextMenu
-            open={Boolean(anchor)}
-            anchorEl={anchor}
-            onClose={() => setAnchor(undefined)}
+            anchorRef={anchor}
             dense
           >
             <ContextMenuItem title='Save'/>
@@ -88,6 +82,10 @@ const App = () => {
             <ContextMenuItem title='More'>
               <ContextMenuItem title='Option'/>
               <ContextMenuItem title='Option 2'/>
+            </ContextMenuItem>
+            <ContextMenuItem title='Even more'>
+              <ContextMenuItem title='The option you are looking for'/>
+              <ContextMenuItem title='Wawa-wiwa'/>
             </ContextMenuItem>
           </ContextMenu>
         </div>

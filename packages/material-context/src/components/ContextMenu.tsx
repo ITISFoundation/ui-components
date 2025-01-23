@@ -1,6 +1,6 @@
 import { ClickAwayListener, Menu, MenuProps, styled } from '@mui/material'
-import { createContext, useState } from 'react'
-import { ContextMenuContextValue } from '../types'
+import { createContext, useEffect, useState } from 'react'
+import { ContextMenuContextValue, ContextMenuProps } from '../types'
 
 export const ContextMenuContext = createContext<ContextMenuContextValue>({
   dense: false
@@ -11,24 +11,62 @@ const ANCHOR_ORIGIN_DEFAULT: MenuProps['anchorOrigin'] = {
   horizontal: 'right'
 }
 
-const ContextMenu = (props: MenuProps & {
-  submenu?: boolean
-  dense?: boolean
-}) => {
-  const { submenu, dense=false, onClose, anchorOrigin=ANCHOR_ORIGIN_DEFAULT, ...rest } = props
-  const [context] = useState({ dense })
+const ContextMenu = (props: ContextMenuProps) => {
+
+  const {
+    open,
+    submenu,
+    dense,
+    onClose,
+    anchorRef,
+    anchorReference = submenu ? 'anchorEl' : 'anchorPosition',
+    anchorOrigin=ANCHOR_ORIGIN_DEFAULT,
+    anchorPosition,
+    ...rest
+  } = props
+
+  const [context] = useState<ContextMenuContextValue>({ dense })
+  const [selfOpen, setSelfOpen] = useState<MenuProps['open']>(false)
+  const [selfAnchorPosition, setSelfAnchorPosition] = useState<MenuProps['anchorPosition']>({ top: 0, left: 0 })
+
+  useEffect(() => {
+    if (open == null && anchorRef) {
+      const el = anchorRef.current
+      if (el) {
+        const handler = (e: Event) => {
+          if (e.type === 'contextmenu') {
+            e.preventDefault()
+            setSelfOpen(true)
+          }
+        }
+        const eventName = submenu ? 'click' : 'contextmenu'
+        el.addEventListener(eventName, handler)
+        return () => el.removeEventListener(eventName, handler)
+      }
+    }
+  }, [open, anchorRef])
+
+  const clickAwayHandler = (e: MouseEvent | TouchEvent) => {
+    setSelfOpen(false)
+    onClose && onClose(e, 'backdropClick')
+  }
+
   const menu = (
     <Menu
+      open={open == null ? selfOpen : open}
+      anchorOrigin={anchorOrigin}
+      anchorPosition={anchorPosition == null ? selfAnchorPosition : anchorPosition}
+      anchorReference={anchorReference}
       hideBackdrop
       disableAutoFocusItem
       onClose={onClose}
-      anchorOrigin={anchorOrigin}
       {...rest}
     />
   )
+
   return submenu ? menu : (
     <ContextMenuContext.Provider value={context}>
-      <ClickAwayListener onClickAway={e => onClose && onClose(e, 'backdropClick')}>
+      <ClickAwayListener onClickAway={clickAwayHandler}>
         {menu}
       </ClickAwayListener>
     </ContextMenuContext.Provider>
