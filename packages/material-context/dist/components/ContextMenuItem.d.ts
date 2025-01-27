@@ -4,7 +4,7 @@ declare const _default: import("@emotion/styled").StyledComponent<import("@mui/m
 }, "className" | "style" | "classes" | "action" | "centerRipple" | "children" | "disabled" | "disableRipple" | "disableTouchRipple" | "focusRipple" | "focusVisibleClassName" | "LinkComponent" | "onFocusVisible" | "sx" | "tabIndex" | "TouchRippleProps" | "touchRippleRef" | "autoFocus" | "dense" | "disableGutters" | "divider" | "selected"> & {
     component?: React.ElementType;
 } & {
-    id?: string | number;
+    itemId?: string | number;
     title: string;
     shortcut?: string;
     checked?: boolean;

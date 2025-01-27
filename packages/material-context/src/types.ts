@@ -1,19 +1,19 @@
 import { MenuItemProps, MenuProps } from "@mui/material"
 
 export type ContextMenuItemProps = MenuItemProps & {
-  id?: string | number
+  itemId?: string | number
   title: string
   shortcut?: string
   checked?: boolean
   icon?: React.ReactNode
 }
 
-export type ContextMenuProps = Omit<MenuProps, 'open'> & {
+export type ContextMenuProps = Omit<MenuProps, 'open' | 'onSelect'> & {
   open?: boolean
   submenu?: boolean
   dense?: boolean
   anchorRef?: React.MutableRefObject<Element | null>,
-  onSelect?: (e: MouseEvent, id?: ContextMenuItemProps['id']) => void
+  onSelect?: (e: Event, id: string | number) => void
 }
 
 export type ContextMenuContextValue = {

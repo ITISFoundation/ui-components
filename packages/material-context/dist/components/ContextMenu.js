@@ -24,8 +24,14 @@ const ANCHOR_ORIGIN_DEFAULT = {
 };
 const ContextMenu = (props) => {
     const { open, submenu, dense, onClose, anchorRef, anchorReference = submenu ? 'anchorEl' : 'anchorPosition', anchorOrigin = ANCHOR_ORIGIN_DEFAULT, anchorPosition, onSelect } = props, rest = __rest(props, ["open", "submenu", "dense", "onClose", "anchorRef", "anchorReference", "anchorOrigin", "anchorPosition", "onSelect"]);
-    const [context] = (0, react_1.useState)({ dense, onSelect });
     const [selfOpen, setSelfOpen] = (0, react_1.useState)(false);
+    const [context] = (0, react_1.useState)({
+        dense,
+        onSelect: (e, id) => {
+            onSelect && onSelect(e, id);
+            setSelfOpen(false);
+        }
+    });
     const [selfAnchorPosition, setSelfAnchorPosition] = (0, react_1.useState)({ top: 0, left: 0 });
     (0, react_1.useEffect)(() => {
         if (open == null && anchorRef) {

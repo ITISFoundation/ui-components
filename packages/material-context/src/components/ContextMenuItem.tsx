@@ -1,14 +1,19 @@
 import { ArrowRight, Check } from '@mui/icons-material';
-import { ListItemIcon, ListItemText, MenuItem, MenuItemProps, styled } from '@mui/material';
+import { ListItemIcon, ListItemText, MenuItem, styled } from '@mui/material';
 import React, { useContext, useRef, useState } from 'react';
 import { ContextMenuItemProps } from '../types';
 import ContextMenu, { ContextMenuContext } from './ContextMenu';
 
 const ContextMenuItem = (props: ContextMenuItemProps) => {
-  const { id, children, checked, icon, title, shortcut, ...rest } = props
+
+  const { itemId, children, checked, icon, title, shortcut, ...rest } = props
+
   const { dense, onSelect } = useContext(ContextMenuContext)
+
   const [anchor, setAnchor] = useState<Element>()
+
   const ref = useRef(null)
+
   const setOpen = (open: boolean) => {
     if (ref.current && open) {
       setAnchor(ref.current)
@@ -16,13 +21,15 @@ const ContextMenuItem = (props: ContextMenuItemProps) => {
       setAnchor(undefined)
     }
   }
+
   const clickHandler = (e: React.MouseEvent) => {
     if (React.Children.count(children) > 0) {
       setOpen(true)
     } else {
-      onSelect && onSelect(e.nativeEvent, id)
+      onSelect && onSelect(e.nativeEvent, itemId == null ? title : itemId)
     }
   }
+
   return (
     <MenuItem 
       ref={ref}
@@ -42,7 +49,7 @@ const ContextMenuItem = (props: ContextMenuItemProps) => {
           {children}
         </ContextMenu>
       )}
-      <ListItemIcon>
+      <ListItemIcon className='context-item-submenu-icon'>
         { React.Children.count(children) > 0 && (
           <ArrowRight/>
         )}
@@ -52,18 +59,22 @@ const ContextMenuItem = (props: ContextMenuItemProps) => {
 }
 
 export default styled(ContextMenuItem)(({ theme }) => `
-  & .context-item-text {
+  & > .context-item-text {
     flex: 1;
     display: flex;
     & > span {
+      flex: 1;
       display: flex;
-      justify-content: space-between;
       & > .context-item-title {
         flex: 1;
       }
       & > .context-item-shortcut {
         color: ${theme.palette.text.disabled};
+        margin-left: ${theme.spacing(1)}
       }
     }
+  }
+  & > .context-item-submenu-icon {
+    justify-content: right;
   }
 `)

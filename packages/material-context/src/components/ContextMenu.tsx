@@ -26,8 +26,14 @@ const ContextMenu = (props: ContextMenuProps) => {
     ...rest
   } = props
 
-  const [context] = useState<ContextMenuContextValue>({ dense, onSelect })
   const [selfOpen, setSelfOpen] = useState<MenuProps['open']>(false)
+  const [context] = useState<ContextMenuContextValue>({
+    dense,
+    onSelect: (e, id) => {
+      onSelect && onSelect(e, id)
+      setSelfOpen(false)
+    }
+  })
   const [selfAnchorPosition, setSelfAnchorPosition] = useState<MenuProps['anchorPosition']>({ top: 0, left: 0 })
 
   useEffect(() => {

@@ -3,6 +3,8 @@ import { Workbench } from '@ui-components/workbench'
 import { Workbench as WorkbenchT } from '@ui-components/workbench/dist/types'
 import { useRef, useState } from 'react'
 import { ContextMenu, ContextMenuItem } from '@ui-components/material-context'
+import { AirportShuttle } from '@mui/icons-material';
+
 
 export const initialWorkbench: WorkbenchT = {
   nodes: [
@@ -76,7 +78,7 @@ const App = () => {
           <ContextMenu
             anchorRef={anchor}
             dense
-            onSelect={e => console.log(e.currentTarget)}
+            onSelect={console.log}
           >
             <ContextMenuItem title='Save'/>
             <ContextMenuItem checked title='Close' shortcut='Ctrl+W'/>
@@ -87,7 +89,11 @@ const App = () => {
             <ContextMenuItem title='Even more'>
               <ContextMenuItem title='The option you are looking for'/>
               <ContextMenuItem title='Wawa-wiwa'/>
+              <ContextMenuItem title='More options'>
+                <ContextMenuItem title='Hidden' shortcut='Ctrl+H'/>
+              </ContextMenuItem>
             </ContextMenuItem>
+            <ContextMenuItem title='Last option' shortcut='Ctrl+L' icon={<AirportShuttle/>}/>
           </ContextMenu>
         </div>
         <Workbench workbench={initialWorkbench} style={{ flex: 1 }}/>
