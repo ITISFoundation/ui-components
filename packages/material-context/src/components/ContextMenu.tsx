@@ -1,6 +1,7 @@
-import { ClickAwayListener, Menu, MenuProps, styled } from '@mui/material'
-import { createContext, useEffect, useState } from 'react'
-import { ContextMenuContextValue, ContextMenuProps } from '../types'
+import { ClickAwayListener, Divider, Menu, MenuProps, styled } from '@mui/material'
+import React, { createContext, useEffect, useState } from 'react'
+import { ContextMenuContextValue, ContextMenuItemWithSubmenu, ContextMenuProps } from '../types'
+import ContextMenuItem from './ContextMenuItem'
 
 export const ContextMenuContext = createContext<ContextMenuContextValue>({
   dense: false
@@ -9,6 +10,17 @@ export const ContextMenuContext = createContext<ContextMenuContextValue>({
 const ANCHOR_ORIGIN_DEFAULT: MenuProps['anchorOrigin'] = {
   vertical: 'top',
   horizontal: 'right'
+}
+
+const ExpandItem = (props: ContextMenuItemWithSubmenu) => {
+  const { submenu, ...rest } = props
+  return (
+    <ContextMenuItem {...rest}>
+      { submenu?.map(item => (
+        <ExpandItem {...item}/>
+      ))}
+    </ContextMenuItem>
+  )
 }
 
 const ContextMenu = (props: ContextMenuProps) => {
@@ -23,6 +35,8 @@ const ContextMenu = (props: ContextMenuProps) => {
     anchorOrigin=ANCHOR_ORIGIN_DEFAULT,
     anchorPosition,
     onSelect,
+    children,
+    menu,
     ...rest
   } = props
 
@@ -60,7 +74,7 @@ const ContextMenu = (props: ContextMenuProps) => {
     onClose && onClose(e, 'backdropClick')
   }
 
-  const menu = (
+  const menuComponent = (
     <Menu
       open={open == null ? selfOpen : open}
       anchorOrigin={anchorOrigin}
@@ -70,13 +84,19 @@ const ContextMenu = (props: ContextMenuProps) => {
       disableAutoFocusItem
       onClose={onClose}
       {...rest}
-    />
+    >
+      { menu?.map(menuItem => (
+        <ExpandItem {...menuItem}/>
+      ))}
+      { menu && menu.length && React.Children.count(children) > 0 && <Divider/> }
+      {children}
+    </Menu>
   )
 
-  return submenu ? menu : (
+  return submenu ? menuComponent : (
     <ContextMenuContext.Provider value={context}>
       <ClickAwayListener onClickAway={clickAwayHandler}>
-        {menu}
+        {menuComponent}
       </ClickAwayListener>
     </ContextMenuContext.Provider>
   )

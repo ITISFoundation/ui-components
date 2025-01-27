@@ -35,7 +35,7 @@ const ContextMenuItem = (props: ContextMenuItemProps) => {
     clearTimeout(enterTimer.current)
     enterTimer.current = setTimeout(() => {
       setOpen(e.type === 'mouseenter')
-    }, e.type === 'mouseenter' ? 400 : 300)
+    }, 400)
   }
 
   return (

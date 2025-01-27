@@ -1,9 +1,10 @@
-import { Button, createTheme, CssBaseline, MenuItem, PaletteMode, Theme, ThemeProvider } from '@mui/material'
+import { Button, createTheme, CssBaseline, Divider, MenuItem, PaletteMode, Theme, ThemeProvider } from '@mui/material'
 import { Workbench } from '@ui-components/workbench'
 import { Workbench as WorkbenchT } from '@ui-components/workbench/dist/types'
 import { useRef, useState } from 'react'
 import { ContextMenu, ContextMenuItem } from '@ui-components/material-context'
 import { AirportShuttle } from '@mui/icons-material';
+import { ContextMenuProps } from '@ui-components/material-context/dist/types'
 
 
 export const initialWorkbench: WorkbenchT = {
@@ -61,6 +62,19 @@ export const initialWorkbench: WorkbenchT = {
   ]
 }
 
+const menu: ContextMenuProps['menu'] = [
+  {
+    title: 'Abrir nuevo documento',
+    shortcut: 'Ctrl+N'
+  }, {
+    title: 'Colores',
+    submenu: [
+      { title: 'Rojo' },
+      { title: 'Azul' }
+    ]
+  }
+]
+
 const App = () => {
   const [theme, setTheme] = useState<Theme>(createTheme({ palette: { mode: 'light' }}))
   const anchor = useRef(null)
@@ -79,6 +93,7 @@ const App = () => {
             anchorRef={anchor}
             dense
             onSelect={console.log}
+            menu={menu}
           >
             <ContextMenuItem title='Save'/>
             <ContextMenuItem checked title='Close' shortcut='Ctrl+W'/>
@@ -86,6 +101,7 @@ const App = () => {
               <ContextMenuItem title='Option'/>
               <ContextMenuItem title='Option 2'/>
             </ContextMenuItem>
+            <Divider/>
             <ContextMenuItem title='Even more'>
               <ContextMenuItem title='The option you are looking for'/>
               <ContextMenuItem title='Wawa-wiwa'/>

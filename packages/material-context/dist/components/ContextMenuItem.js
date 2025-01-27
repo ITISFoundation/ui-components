@@ -75,7 +75,7 @@ const ContextMenuItem = (props) => {
         clearTimeout(enterTimer.current);
         enterTimer.current = setTimeout(() => {
             setOpen(e.type === 'mouseenter');
-        }, e.type === 'mouseenter' ? 400 : 300);
+        }, 400);
     };
     return ((0, jsx_runtime_1.jsxs)(material_1.MenuItem, Object.assign({ ref: ref, dense: dense, onClick: clickHandler, onMouseEnter: enterLeaveHandler, onMouseLeave: enterLeaveHandler }, rest, { children: [(0, jsx_runtime_1.jsx)(material_1.ListItemIcon, { children: checked ? (0, jsx_runtime_1.jsx)(icons_material_1.Check, { fontSize: 'small' }) : icon }), (0, jsx_runtime_1.jsxs)(material_1.ListItemText, { className: 'context-item-text', children: [(0, jsx_runtime_1.jsx)("span", { className: 'context-item-title', children: title }), shortcut && (0, jsx_runtime_1.jsx)("span", { className: 'context-item-shortcut', children: shortcut })] }), react_1.default.Children.count(children) > 0 && ((0, jsx_runtime_1.jsx)(ContextMenu_1.default, { open: Boolean(anchor), submenu: true, anchorEl: anchor, onClose: () => setOpen(false), children: children })), (0, jsx_runtime_1.jsx)(material_1.ListItemIcon, { className: 'context-item-submenu-icon', children: react_1.default.Children.count(children) > 0 && ((0, jsx_runtime_1.jsx)(icons_material_1.ArrowRight, {})) })] })));
 };
