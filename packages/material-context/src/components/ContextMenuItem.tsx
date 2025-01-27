@@ -13,6 +13,7 @@ const ContextMenuItem = (props: ContextMenuItemProps) => {
   const [anchor, setAnchor] = useState<Element>()
 
   const ref = useRef(null)
+  const enterTimer = useRef<NodeJS.Timeout>()
 
   const setOpen = (open: boolean) => {
     if (ref.current && open) {
@@ -26,15 +27,24 @@ const ContextMenuItem = (props: ContextMenuItemProps) => {
     if (React.Children.count(children) > 0) {
       setOpen(true)
     } else {
-      onSelect && onSelect(e.nativeEvent, itemId == null ? title : itemId)
+      onSelect && onSelect(e.nativeEvent, itemId)
     }
+  }
+
+  const enterLeaveHandler = (e: React.MouseEvent) => {
+    clearTimeout(enterTimer.current)
+    enterTimer.current = setTimeout(() => {
+      setOpen(e.type === 'mouseenter')
+    }, e.type === 'mouseenter' ? 400 : 300)
   }
 
   return (
     <MenuItem 
       ref={ref}
       dense={dense}
-      onClick={clickHandler} 
+      onClick={clickHandler}
+      onMouseEnter={enterLeaveHandler}
+      onMouseLeave={enterLeaveHandler}
       {...rest}
     >
       <ListItemIcon>

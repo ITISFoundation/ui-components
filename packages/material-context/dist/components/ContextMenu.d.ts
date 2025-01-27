@@ -6,6 +6,6 @@ declare const _default: import("@emotion/styled").StyledComponent<Omit<MenuProps
     submenu?: boolean;
     dense?: boolean;
     anchorRef?: React.MutableRefObject<Element | null>;
-    onSelect?: (e: Event, id: string | number) => void;
+    onSelect?: (e: Event, id: import("../types").ContextMenuItemProps["itemId"]) => void;
 } & import("@mui/system").MUIStyledCommonProps<import("@mui/material").Theme>, {}, {}>;
 export default _default;

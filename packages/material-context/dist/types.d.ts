@@ -11,7 +11,7 @@ export type ContextMenuProps = Omit<MenuProps, 'open' | 'onSelect'> & {
     submenu?: boolean;
     dense?: boolean;
     anchorRef?: React.MutableRefObject<Element | null>;
-    onSelect?: (e: Event, id: string | number) => void;
+    onSelect?: (e: Event, id: ContextMenuItemProps['itemId']) => void;
 };
 export type ContextMenuContextValue = {
     dense: MenuItemProps['dense'];
