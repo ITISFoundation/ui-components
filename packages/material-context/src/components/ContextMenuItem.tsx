@@ -6,7 +6,7 @@ import ContextMenu, { ContextMenuContext } from './ContextMenu';
 
 const ContextMenuItem = (props: ContextMenuItemProps) => {
 
-  const { itemId, children, checked, icon, title, shortcut, ...rest } = props
+  const { itemId, children, checked, icon, title, shortcut, onClick, ...rest } = props
 
   const { dense, onSelect } = useContext(ContextMenuContext)
 
@@ -29,6 +29,7 @@ const ContextMenuItem = (props: ContextMenuItemProps) => {
     } else {
       onSelect && onSelect(e.nativeEvent, itemId)
     }
+    onClick && onClick(e as React.MouseEvent<HTMLLIElement, MouseEvent>)
   }
 
   const enterLeaveHandler = (e: React.MouseEvent) => {

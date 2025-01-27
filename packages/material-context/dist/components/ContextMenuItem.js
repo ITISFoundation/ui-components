@@ -50,7 +50,7 @@ const material_1 = require("@mui/material");
 const react_1 = __importStar(require("react"));
 const ContextMenu_1 = __importStar(require("./ContextMenu"));
 const ContextMenuItem = (props) => {
-    const { itemId, children, checked, icon, title, shortcut } = props, rest = __rest(props, ["itemId", "children", "checked", "icon", "title", "shortcut"]);
+    const { itemId, children, checked, icon, title, shortcut, onClick } = props, rest = __rest(props, ["itemId", "children", "checked", "icon", "title", "shortcut", "onClick"]);
     const { dense, onSelect } = (0, react_1.useContext)(ContextMenu_1.ContextMenuContext);
     const [anchor, setAnchor] = (0, react_1.useState)();
     const ref = (0, react_1.useRef)(null);
@@ -70,6 +70,7 @@ const ContextMenuItem = (props) => {
         else {
             onSelect && onSelect(e.nativeEvent, itemId);
         }
+        onClick && onClick(e);
     };
     const enterLeaveHandler = (e) => {
         clearTimeout(enterTimer.current);
