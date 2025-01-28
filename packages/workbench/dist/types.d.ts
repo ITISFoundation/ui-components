@@ -22,5 +22,8 @@ export type Workbench = {
     nodes: Node[];
     connections: Connection[];
 };
+export type WorkbenchProps = React.ComponentPropsWithoutRef<'div'> & {
+    workbench: Workbench;
+};
 export type Schemes = GetSchemes<ClassicPreset.Node, ClassicPreset.Connection<ClassicPreset.Node, ClassicPreset.Node>>;
 export type AreaExtra = ReactArea2D<Schemes>;

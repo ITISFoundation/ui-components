@@ -7,8 +7,8 @@ import Node from './Node'
 import { Button, styled, Theme, useTheme } from '@mui/material'
 import Connection from './Connection'
 import Socket from './Socket'
-import { AreaExtra, Schemes, Workbench } from '../types'
-import { autoArrange, elk, elkLayoutFromWorkbench, generateWorkbench } from '../utils'
+import { AreaExtra, Schemes, Workbench, WorkbenchProps } from '../types'
+import { autoArrange, generateWorkbench } from '../utils'
 import { Transform } from 'rete-area-plugin/_types/area'
 
 const createEditor = async (
@@ -89,9 +89,7 @@ const createEditor = async (
   }
 }
 
-const Workbench = (props: {
-  workbench: Workbench
-} & React.ComponentPropsWithoutRef<'div'>) => {
+const Workbench = (props: WorkbenchProps) => {
   const { workbench: wb, ...rest } = props
   const theme = useTheme()
   const socketSelectionState = useState<string>('')

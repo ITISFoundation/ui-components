@@ -27,6 +27,10 @@ export type Workbench = {
   connections: Connection[]
 }
 
+export type WorkbenchProps = React.ComponentPropsWithoutRef<'div'> & {
+  workbench: Workbench
+}
+
 export type Schemes = GetSchemes<
   ClassicPreset.Node,
   ClassicPreset.Connection<ClassicPreset.Node, ClassicPreset.Node>
