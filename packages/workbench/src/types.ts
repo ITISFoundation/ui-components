@@ -28,6 +28,7 @@ export type Workbench = {
 }
 
 export type WorkbenchProps = React.ComponentPropsWithoutRef<'div'> & {
+  /** JSON representation of a workbench to display */
   workbench: Workbench
 }
 

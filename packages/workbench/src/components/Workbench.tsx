@@ -4,18 +4,19 @@ import { ReactPlugin, Presets, useRete } from 'rete-react-plugin'
 import { createRoot } from 'react-dom/client'
 import { AreaPlugin } from 'rete-area-plugin'
 import Node from './Node'
-import { Button, styled, Theme, useTheme } from '@mui/material'
+import { Button, Theme, useTheme } from '@mui/material'
 import Connection from './Connection'
 import Socket from './Socket'
-import { AreaExtra, Schemes, Workbench, WorkbenchProps } from '../types'
+import { AreaExtra, Schemes, Workbench as WorkbenchT, WorkbenchProps } from '../types'
 import { autoArrange, generateWorkbench } from '../utils'
 import { Transform } from 'rete-area-plugin/_types/area'
+import { css, styled } from '@mui/material/styles'
 
 const createEditor = async (
   container: HTMLElement,
   theme: Theme,
   socketSelectionState: [string, React.Dispatch<React.SetStateAction<string>>],
-  workbenchSetter: React.Dispatch<React.SetStateAction<Workbench>>,
+  workbenchSetter: React.Dispatch<React.SetStateAction<WorkbenchT>>,
   areaTransformSetter: React.Dispatch<React.SetStateAction<Transform>>
 ) => {
   const editor = new NodeEditor<Schemes>()
@@ -83,17 +84,20 @@ const createEditor = async (
 
   return {
     destroy: () => area.destroy(),
-    create: (workbench: Workbench, areaTransform: Transform) => generateWorkbench(workbench, areaTransform, area, editor),
-    updatePositions: (workbench: Workbench) => workbench.nodes.forEach(node => node.position && area.translate(node.id, node.position)),
-    autoArrange: (workbench: Workbench) => autoArrange(workbench, area)
+    create: (workbench: WorkbenchT, areaTransform: Transform) => generateWorkbench(workbench, areaTransform, area, editor),
+    updatePositions: (workbench: WorkbenchT) => workbench.nodes.forEach(node => node.position && area.translate(node.id, node.position)),
+    autoArrange: (workbench: WorkbenchT) => autoArrange(workbench, area)
   }
 }
 
-const Workbench = (props: WorkbenchProps) => {
+/**
+ * And now
+ */
+export const Workbench = (props: WorkbenchProps) => {
   const { workbench: wb, ...rest } = props
   const theme = useTheme()
   const socketSelectionState = useState<string>('')
-  const [workbench, setWorkbench] = useState<Workbench>(wb)
+  const [workbench, setWorkbench] = useState<WorkbenchT>(wb)
   const [areaTransform, setAreaTransform] = useState<Transform>({ x: 0, y: 0, k: 1 })
   const createCb = useCallback(
     (containerEl: HTMLElement) => createEditor(containerEl, theme, socketSelectionState, setWorkbench, setAreaTransform),

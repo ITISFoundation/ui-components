@@ -23,6 +23,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Workbench = void 0;
 const jsx_runtime_1 = require("react/jsx-runtime");
 const react_1 = require("react");
 const rete_1 = require("rete");
@@ -115,14 +116,15 @@ const Workbench = (props) => {
     };
     return ((0, jsx_runtime_1.jsx)("div", Object.assign({}, rest, { children: (0, jsx_runtime_1.jsxs)("div", { className: 'wb-inner-container', children: [(0, jsx_runtime_1.jsx)("div", { children: (0, jsx_runtime_1.jsx)(material_1.Button, { onClick: autoArrangeHandler, children: "Auto-arrange" }) }), (0, jsx_runtime_1.jsx)("div", { ref: ref, className: 'wb-workbench', style: { position: 'relative', padding: '18px' } })] }) })));
 };
-exports.default = (0, material_1.styled)(Workbench) `
-  & > .wb-inner-container {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    & > .wb-workbench {
-      flex: 1
-    }
+exports.Workbench = Workbench;
+exports.default = (0, material_1.styled)(exports.Workbench) `
+& > .wb-inner-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  & > .wb-workbench {
+    flex: 1
   }
+}
 `;
 //# sourceMappingURL=Workbench.js.map
