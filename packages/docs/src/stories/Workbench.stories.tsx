@@ -2,7 +2,7 @@ import React from 'react'
 
 import type { Meta, StoryObj } from '@storybook/react';
 import StyledWorkbench, { Workbench } from '@ui-components/workbench/src/components/Workbench'
-import { initialWorkbench } from '../App';
+import workbench from './workbench_example';
 
 import { Paper } from '@mui/material';
 import { Workbench as WorkbenchT } from '@ui-components/workbench/src/types';
@@ -35,7 +35,7 @@ type Story = StoryObj<typeof Workbench>;
 
 export const Primary: Story = {
   args: {
-    workbench: initialWorkbench,
+    workbench,
     areaTransform: { x: 140, y: 75, k: 1 },
     style: { height: '100%' }
   },
