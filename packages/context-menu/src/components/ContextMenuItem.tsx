@@ -4,7 +4,7 @@ import React, { useContext, useRef, useState } from 'react';
 import { ContextMenuItemProps } from '../types';
 import ContextMenu, { ContextMenuContext } from './ContextMenu';
 
-const ContextMenuItem = (props: ContextMenuItemProps) => {
+export const ContextMenuItem = (props: ContextMenuItemProps) => {
 
   const { itemId, children, checked, icon, title, shortcut, onClick, ...rest } = props
 
@@ -13,7 +13,7 @@ const ContextMenuItem = (props: ContextMenuItemProps) => {
   const [anchor, setAnchor] = useState<Element>()
 
   const ref = useRef(null)
-  const enterTimer = useRef<NodeJS.Timeout>()
+  const enterTimer = useRef<NodeJS.Timeout>(undefined)
 
   const setOpen = (open: boolean) => {
     if (ref.current && open) {
