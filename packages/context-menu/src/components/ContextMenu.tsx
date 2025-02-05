@@ -23,7 +23,7 @@ const ExpandItem = (props: ContextMenuItemWithSubmenu) => {
   )
 }
 
-const ContextMenu = (props: ContextMenuProps) => {
+export const ContextMenu = (props: ContextMenuProps) => {
 
   const {
     open,

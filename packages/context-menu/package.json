@@ -1,5 +1,5 @@
 {
-  "name": "@ui-components/material-context",
+  "name": "@ui-components/context-menu",
   "version": "1.0.0",
   "description": "Multilevel context menus built for React using Material UI.",
   "main": "dist/index.js",

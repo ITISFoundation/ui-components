@@ -18,7 +18,7 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^5.15.14",
     "@mui/material": "^5.16.12",
-    "@ui-components/material-context": "file:../material-context",
+    "@ui-components/context-menu": "file:../context-menu",
     "@ui-components/workbench": "file:../workbench",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"

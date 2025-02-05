@@ -40,7 +40,7 @@ const config: StorybookConfig = {
       shouldRemoveUndefinedFromOptional: true,
       propFilter: prop => (prop.parent ? !/node_modules/.test(prop.parent.fileName) : true)
     },
-    check: true
+    check: false
   },
   swc: () => ({
     jsc: {

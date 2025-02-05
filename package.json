@@ -13,7 +13,7 @@
   "workspaces": [
     "packages/docs",
     "packages/workbench",
-    "packages/material-context"
+    "packages/context-menu"
   ],
   "engines": {
     "node": ">=18"

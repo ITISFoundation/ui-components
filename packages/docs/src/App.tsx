@@ -2,9 +2,9 @@ import { Button, createTheme, CssBaseline, Divider, MenuItem, PaletteMode, Theme
 import { Workbench } from '@ui-components/workbench'
 import { Workbench as WorkbenchT } from '@ui-components/workbench/dist/types'
 import { useRef, useState } from 'react'
-import { ContextMenu, ContextMenuItem } from '@ui-components/material-context'
+import { ContextMenu, ContextMenuItem } from '@ui-components/context-menu'
 import { AirportShuttle } from '@mui/icons-material';
-import { ContextMenuProps } from '@ui-components/material-context/dist/types'
+import { ContextMenuProps } from '@ui-components/context-menu/dist/types'
 
 
 export const initialWorkbench: WorkbenchT = {
