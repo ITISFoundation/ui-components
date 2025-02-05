@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { NodeEditor } from 'rete'
 import { ReactPlugin, Presets, useRete } from 'rete-react-plugin'
 import { createRoot } from 'react-dom/client'
@@ -91,14 +91,34 @@ const createEditor = async (
 }
 
 /**
- * And now
+ * ### Description
+ * Visual representation of a directed graph used to depict a data flow and the elements that generate/consume/process this data.
+ * It consists of **nodes** and **edges** (we call the latter connections). Nodes can have many connection (input and output) ports.
+ * #### Nodes have
+ * * Title
+ * * Input/output ports
+ * * Action buttons
+ * * Other workbenches (scoping)
+ * 
+ * #### Connections
+ * Connect output ports with input ports and represent the flow of data.
+ * ### Interactivity
+ * #### Area
+ * * Zoom using the mouse wheel
+ * * Pan by drag and dropping on an empty area
+ * * Move nodes by dragging and dropping
+ * * Auto-arranging of nodes
+ * * Reset the view by double clicking on an empty area
+ * 
+ * #### Nodes
+ * * Click on a port to select it
  */
 export const Workbench = (props: WorkbenchProps) => {
-  const { workbench: wb, ...rest } = props
+  const { workbench: wb, areaTransform: aT={ x: 0, y: 0, k: 1 }, ...rest } = props
   const theme = useTheme()
   const socketSelectionState = useState<string>('')
   const [workbench, setWorkbench] = useState<WorkbenchT>(wb)
-  const [areaTransform, setAreaTransform] = useState<Transform>({ x: 0, y: 0, k: 1 })
+  const [areaTransform, setAreaTransform] = useState<Transform>(aT)
   const createCb = useCallback(
     (containerEl: HTMLElement) => createEditor(containerEl, theme, socketSelectionState, setWorkbench, setAreaTransform),
     [theme, socketSelectionState[0]]

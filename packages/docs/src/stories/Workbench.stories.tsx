@@ -5,6 +5,10 @@ import StyledWorkbench, { Workbench } from '@ui-components/workbench/src/compone
 import { initialWorkbench } from '../App';
 
 import { Paper } from '@mui/material';
+import { Workbench as WorkbenchT } from '@ui-components/workbench/src/types';
+
+let key=0
+let lastWorkbench: WorkbenchT | undefined
 
 const meta: Meta<typeof Workbench> = {
   component: Workbench,
@@ -17,7 +21,12 @@ const meta: Meta<typeof Workbench> = {
       )
     }
   ],
-  title: 'Workbench/Workbench'
+  title: 'Workbench/Workbench',
+  render: args => {
+    const workbenchChanged = args.workbench !== lastWorkbench
+    lastWorkbench = args.workbench
+    return <StyledWorkbench key={workbenchChanged ? ++key : key} {...args}/>
+  }
 };
  
 export default meta;
@@ -27,6 +36,7 @@ type Story = StoryObj<typeof Workbench>;
 export const Primary: Story = {
   args: {
     workbench: initialWorkbench,
+    areaTransform: { x: 140, y: 75, k: 1 },
     style: { height: '100%' }
   },
   argTypes: {
@@ -34,9 +44,11 @@ export const Primary: Story = {
       table: {
         disable: true
       }
+    },
+    areaTransform: {
+      table: {
+        disable: true
+      }
     }
-  },
-  decorators: [
-    (_, { args }) => <StyledWorkbench {...args}/>
-  ]
+  }
 };

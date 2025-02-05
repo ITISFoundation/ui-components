@@ -13,7 +13,8 @@ const preview: Preview = {
       matchers: {
         color: /(background|color)$/i,
         date: /Date$/i,
-      }
+      },
+      disableSaveFromUI: true
     }
   },
   decorators: [

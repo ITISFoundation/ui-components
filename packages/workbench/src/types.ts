@@ -1,4 +1,5 @@
 import { ClassicPreset, GetSchemes } from 'rete'
+import { Transform } from 'rete-area-plugin/_types/area'
 import { ReactArea2D } from 'rete-react-plugin'
 
 export type Port = {
@@ -30,6 +31,7 @@ export type Workbench = {
 export type WorkbenchProps = React.ComponentPropsWithoutRef<'div'> & {
   /** JSON representation of a workbench to display */
   workbench: Workbench
+  areaTransform?: Transform
 }
 
 export type Schemes = GetSchemes<
