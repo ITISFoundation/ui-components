@@ -4,7 +4,8 @@ import { ContextMenuContextValue, ContextMenuItemWithSubmenu, ContextMenuProps }
 import ContextMenuItem from './ContextMenuItem'
 
 export const ContextMenuContext = createContext<ContextMenuContextValue>({
-  dense: false
+  dense: false,
+  disablePortal: false
 })
 
 const ANCHOR_ORIGIN_DEFAULT: MenuProps['anchorOrigin'] = {
@@ -17,7 +18,7 @@ const ExpandItem = (props: ContextMenuItemWithSubmenu) => {
   return (
     <ContextMenuItem {...rest}>
       { submenu?.map(item => (
-        <ExpandItem {...item}/>
+        <ExpandItem key={item.itemId || item.title} {...item}/>
       ))}
     </ContextMenuItem>
   )
@@ -29,6 +30,7 @@ export const ContextMenu = (props: ContextMenuProps) => {
     open,
     submenu,
     dense,
+    disablePortal,
     onClose,
     anchorRef,
     anchorReference = submenu ? 'anchorEl' : 'anchorPosition',
@@ -41,8 +43,9 @@ export const ContextMenu = (props: ContextMenuProps) => {
   } = props
 
   const [selfOpen, setSelfOpen] = useState<MenuProps['open']>(false)
-  const [context] = useState<ContextMenuContextValue>({
+  const [context, setContext] = useState<ContextMenuContextValue>({
     dense,
+    disablePortal,
     onSelect: (e, id) => {
       onSelect && onSelect(e, id)
       setSelfOpen(false)
@@ -69,6 +72,14 @@ export const ContextMenu = (props: ContextMenuProps) => {
     }
   }, [open, anchorRef])
 
+  useEffect(() => {
+    setContext(prevContext => ({
+      ...prevContext,
+      dense,
+      disablePortal
+    }))
+  }, [dense, disablePortal])
+
   const clickAwayHandler = (e: MouseEvent | TouchEvent) => {
     setSelfOpen(false)
     onClose && onClose(e, 'backdropClick')
@@ -83,10 +94,11 @@ export const ContextMenu = (props: ContextMenuProps) => {
       hideBackdrop
       disableAutoFocusItem
       onClose={onClose}
+      disablePortal={disablePortal}
       {...rest}
     >
       { menu?.map(menuItem => (
-        <ExpandItem {...menuItem}/>
+        <ExpandItem key={menuItem.itemId || menuItem.title} {...menuItem}/>
       ))}
       { menu && menu.length && React.Children.count(children) > 0 && <Divider/> }
       {children}

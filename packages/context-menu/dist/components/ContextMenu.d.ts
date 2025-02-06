@@ -1,7 +1,8 @@
 import { MenuProps } from '@mui/material';
 import React from 'react';
-import { ContextMenuContextValue, ContextMenuItemWithSubmenu } from '../types';
+import { ContextMenuContextValue, ContextMenuItemWithSubmenu, ContextMenuProps } from '../types';
 export declare const ContextMenuContext: React.Context<ContextMenuContextValue>;
+export declare const ContextMenu: (props: ContextMenuProps) => import("react/jsx-runtime").JSX.Element;
 declare const _default: import("@emotion/styled").StyledComponent<Omit<MenuProps, "onSelect" | "open"> & {
     open?: boolean;
     submenu?: boolean;
