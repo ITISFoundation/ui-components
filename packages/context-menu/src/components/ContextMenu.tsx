@@ -1,6 +1,6 @@
 import { ClickAwayListener, Divider, Menu, MenuProps, styled } from '@mui/material'
 import React, { createContext, useEffect, useState } from 'react'
-import { ContextMenuContextValue, ContextMenuItemWithSubmenu, ContextMenuProps } from '../types'
+import { ContextMenuContextValue, ContextMenuItemWithSubmenu, ContextMenuProps, isDivider } from '../types'
 import ContextMenuItem from './ContextMenuItem'
 
 export const ContextMenuContext = createContext<ContextMenuContextValue>({
@@ -16,9 +16,12 @@ const ExpandItem = (props: ContextMenuItemWithSubmenu) => {
   const { submenu, ...rest } = props
   return (
     <ContextMenuItem {...rest}>
-      { submenu?.map(item => (
-        <ExpandItem key={item.itemId || item.title} {...item}/>
-      ))}
+      { submenu?.map(item => {
+        if (isDivider(item)) {
+          return <Divider/>
+        }
+        return <ExpandItem key={item.itemId || item.title} {...item}/>
+      })}
     </ContextMenuItem>
   )
 }
@@ -94,9 +97,12 @@ export const ContextMenu = (props: ContextMenuProps) => {
       disablePortal={disablePortal}
       {...rest}
     >
-      { menu?.map(menuItem => (
-        <ExpandItem key={menuItem.itemId || menuItem.title} {...menuItem}/>
-      ))}
+      { menu?.map(menuItem => {
+        if (isDivider(menuItem)) {
+          return <Divider/>
+        }
+        return <ExpandItem key={menuItem.itemId || menuItem.title} {...menuItem}/>
+      })}
       { menu && menu.length && React.Children.count(children) > 0 && <Divider/> }
       {children}
     </Menu>

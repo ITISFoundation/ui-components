@@ -15,8 +15,9 @@ export type ContextMenuItem = {
     icon?: React.ReactNode;
 };
 export type ContextMenuItemWithSubmenu = ContextMenuItem & {
-    submenu?: ContextMenuItemWithSubmenu[];
+    submenu?: ContextMenuItemWithSubmenuOrDivider[];
 };
+export type ContextMenuItemWithSubmenuOrDivider = ContextMenuItemWithSubmenu | Divider;
 export type ContextMenuItemProps = MenuItemProps & ContextMenuItem;
 export type ContextMenuProps = Omit<MenuProps, 'open' | 'onSelect'> & {
     /** Displays or hides the menu. */
@@ -30,9 +31,10 @@ export type ContextMenuProps = Omit<MenuProps, 'open' | 'onSelect'> & {
     /** Called when a menu item gets selected. */
     onSelect?: (e: Event, id: ContextMenuItemProps['itemId']) => void;
     /** This property is used to control which menu items to display. */
-    menu?: ContextMenuItemWithSubmenu[];
+    menu?: ContextMenuItemWithSubmenuOrDivider[];
 };
 export type ContextMenuContextValue = {
     dense: MenuItemProps['dense'];
     onSelect?: ContextMenuProps['onSelect'];
 };
+export declare function isDivider(obj: any): obj is Divider;

@@ -51,6 +51,7 @@ exports.ContextMenu = exports.ContextMenuContext = void 0;
 const jsx_runtime_1 = require("react/jsx-runtime");
 const material_1 = require("@mui/material");
 const react_1 = __importStar(require("react"));
+const types_1 = require("../types");
 const ContextMenuItem_1 = __importDefault(require("./ContextMenuItem"));
 exports.ContextMenuContext = (0, react_1.createContext)({
     dense: false,
@@ -61,7 +62,12 @@ const ANCHOR_ORIGIN_DEFAULT = {
 };
 const ExpandItem = (props) => {
     const { submenu } = props, rest = __rest(props, ["submenu"]);
-    return ((0, jsx_runtime_1.jsx)(ContextMenuItem_1.default, Object.assign({}, rest, { children: submenu === null || submenu === void 0 ? void 0 : submenu.map(item => ((0, jsx_runtime_1.jsx)(ExpandItem, Object.assign({}, item), item.itemId || item.title))) })));
+    return ((0, jsx_runtime_1.jsx)(ContextMenuItem_1.default, Object.assign({}, rest, { children: submenu === null || submenu === void 0 ? void 0 : submenu.map(item => {
+            if ((0, types_1.isDivider)(item)) {
+                return (0, jsx_runtime_1.jsx)(material_1.Divider, {});
+            }
+            return (0, jsx_runtime_1.jsx)(ExpandItem, Object.assign({}, item), item.itemId || item.title);
+        }) })));
 };
 const ContextMenu = (props) => {
     const { open, submenu, dense, disablePortal, onClose, anchorRef, anchorReference = submenu ? 'anchorEl' : 'anchorPosition', anchorOrigin = ANCHOR_ORIGIN_DEFAULT, anchorPosition, onSelect, children, menu } = props, rest = __rest(props, ["open", "submenu", "dense", "disablePortal", "onClose", "anchorRef", "anchorReference", "anchorOrigin", "anchorPosition", "onSelect", "children", "menu"]);
@@ -99,7 +105,12 @@ const ContextMenu = (props) => {
         setSelfOpen(false);
         onClose && onClose(e, 'backdropClick');
     };
-    const menuComponent = ((0, jsx_runtime_1.jsxs)(material_1.Menu, Object.assign({ open: open == null ? selfOpen : open, anchorOrigin: anchorOrigin, anchorPosition: anchorPosition == null ? selfAnchorPosition : anchorPosition, anchorReference: anchorReference, hideBackdrop: true, disableAutoFocusItem: true, onClose: onClose, disablePortal: disablePortal }, rest, { children: [menu === null || menu === void 0 ? void 0 : menu.map(menuItem => ((0, jsx_runtime_1.jsx)(ExpandItem, Object.assign({}, menuItem), menuItem.itemId || menuItem.title))), menu && menu.length && react_1.default.Children.count(children) > 0 && (0, jsx_runtime_1.jsx)(material_1.Divider, {}), children] })));
+    const menuComponent = ((0, jsx_runtime_1.jsxs)(material_1.Menu, Object.assign({ open: open == null ? selfOpen : open, anchorOrigin: anchorOrigin, anchorPosition: anchorPosition == null ? selfAnchorPosition : anchorPosition, anchorReference: anchorReference, hideBackdrop: true, disableAutoFocusItem: true, onClose: onClose, disablePortal: disablePortal }, rest, { children: [menu === null || menu === void 0 ? void 0 : menu.map(menuItem => {
+                if ((0, types_1.isDivider)(menuItem)) {
+                    return (0, jsx_runtime_1.jsx)(material_1.Divider, {});
+                }
+                return (0, jsx_runtime_1.jsx)(ExpandItem, Object.assign({}, menuItem), menuItem.itemId || menuItem.title);
+            }), menu && menu.length && react_1.default.Children.count(children) > 0 && (0, jsx_runtime_1.jsx)(material_1.Divider, {}), children] })));
     return submenu ? menuComponent : ((0, jsx_runtime_1.jsx)(exports.ContextMenuContext.Provider, { value: context, children: (0, jsx_runtime_1.jsx)(material_1.ClickAwayListener, { onClickAway: clickAwayHandler, children: menuComponent }) }));
 };
 exports.ContextMenu = ContextMenu;

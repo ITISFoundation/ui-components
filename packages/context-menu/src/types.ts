@@ -18,8 +18,10 @@ export type ContextMenuItem = {
 }
 
 export type ContextMenuItemWithSubmenu = ContextMenuItem & {
-  submenu?: ContextMenuItemWithSubmenu[]
+  submenu?: ContextMenuItemWithSubmenuOrDivider[]
 }
+
+export type ContextMenuItemWithSubmenuOrDivider = ContextMenuItemWithSubmenu | Divider
 
 export type ContextMenuItemProps = MenuItemProps & ContextMenuItem
 
@@ -35,10 +37,17 @@ export type ContextMenuProps = Omit<MenuProps, 'open' | 'onSelect'> & {
   /** Called when a menu item gets selected. */
   onSelect?: (e: Event, id: ContextMenuItemProps['itemId']) => void
   /** This property is used to control which menu items to display. */
-  menu?: ContextMenuItemWithSubmenu[]
+  menu?: ContextMenuItemWithSubmenuOrDivider[]
 }
 
 export type ContextMenuContextValue = {
   dense: MenuItemProps['dense'],
   onSelect?: ContextMenuProps['onSelect']
+}
+
+export function isDivider(obj: any): obj is Divider {
+  if (obj.divider == null) {
+    return false
+  }
+  return Object.keys(obj).length === 1
 }
