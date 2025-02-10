@@ -54,7 +54,6 @@ const react_1 = __importStar(require("react"));
 const ContextMenuItem_1 = __importDefault(require("./ContextMenuItem"));
 exports.ContextMenuContext = (0, react_1.createContext)({
     dense: false,
-    disablePortal: false
 });
 const ANCHOR_ORIGIN_DEFAULT = {
     vertical: 'top',
@@ -69,7 +68,6 @@ const ContextMenu = (props) => {
     const [selfOpen, setSelfOpen] = (0, react_1.useState)(false);
     const [context, setContext] = (0, react_1.useState)({
         dense,
-        disablePortal,
         onSelect: (e, id) => {
             onSelect && onSelect(e, id);
             setSelfOpen(false);
@@ -95,9 +93,8 @@ const ContextMenu = (props) => {
         }
     }, [open, anchorRef]);
     (0, react_1.useEffect)(() => {
-        setContext(prevContext => (Object.assign(Object.assign({}, prevContext), { dense,
-            disablePortal })));
-    }, [dense, disablePortal]);
+        setContext(prevContext => (Object.assign(Object.assign({}, prevContext), { dense })));
+    }, [dense]);
     const clickAwayHandler = (e) => {
         setSelfOpen(false);
         onClose && onClose(e, 'backdropClick');

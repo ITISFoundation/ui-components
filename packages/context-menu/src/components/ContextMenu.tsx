@@ -5,7 +5,6 @@ import ContextMenuItem from './ContextMenuItem'
 
 export const ContextMenuContext = createContext<ContextMenuContextValue>({
   dense: false,
-  disablePortal: false
 })
 
 const ANCHOR_ORIGIN_DEFAULT: MenuProps['anchorOrigin'] = {
@@ -45,7 +44,6 @@ export const ContextMenu = (props: ContextMenuProps) => {
   const [selfOpen, setSelfOpen] = useState<MenuProps['open']>(false)
   const [context, setContext] = useState<ContextMenuContextValue>({
     dense,
-    disablePortal,
     onSelect: (e, id) => {
       onSelect && onSelect(e, id)
       setSelfOpen(false)
@@ -75,10 +73,9 @@ export const ContextMenu = (props: ContextMenuProps) => {
   useEffect(() => {
     setContext(prevContext => ({
       ...prevContext,
-      dense,
-      disablePortal
+      dense
     }))
-  }, [dense, disablePortal])
+  }, [dense])
 
   const clickAwayHandler = (e: MouseEvent | TouchEvent) => {
     setSelfOpen(false)

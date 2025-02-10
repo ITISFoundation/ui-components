@@ -1,22 +1,10 @@
-import React from 'react'
+import React, { useRef } from 'react'
 
 import type { Meta, StoryObj } from '@storybook/react';
 import StyledContextMenu, { ContextMenu } from '@ui-components/context-menu/src/components/ContextMenu'
-import { ContextMenuProps } from '@ui-components/context-menu/src/types';
-import { ContextMenuItem } from '@ui-components/context-menu/src/components/ContextMenuItem';
-
-const menu: ContextMenuProps['menu'] = [
-  {
-    title: 'Abrir nuevo documento',
-    shortcut: 'Ctrl+N'
-  }, {
-    title: 'Colores',
-    submenu: [
-      { title: 'Rojo' },
-      { title: 'Azul' }
-    ]
-  }
-]
+import { ContextMenuItem } from '@ui-components/context-menu/src/components/ContextMenuItem'
+import { styled } from '@mui/material'
+import menu from './menuExample'
 
 const meta: Meta<typeof ContextMenu> = {
   component: ContextMenu,
@@ -29,12 +17,19 @@ export default meta;
 
 type Story = StoryObj<typeof ContextMenu>;
 
+const PrimaryExample = styled(StyledContextMenu)`
+  display: flex;
+  position: static;
+  & > .MuiMenu-paper {
+    position: static;
+  }
+`
+
 export const Primary: Story = {
   args: {
     open: true,
+    dense: false,
     menu
   },
-  render: props => (
-    <StyledContextMenu {...props}/>
-  )
+  render: args => <PrimaryExample disablePortal {...args}/>
 };

@@ -8,7 +8,7 @@ export const ContextMenuItem = (props: ContextMenuItemProps) => {
 
   const { itemId, children, checked, icon, title, shortcut, onClick, ...rest } = props
 
-  const { dense, disablePortal, onSelect } = useContext(ContextMenuContext)
+  const { dense, onSelect } = useContext(ContextMenuContext)
 
   const [anchor, setAnchor] = useState<Element>()
 
@@ -56,7 +56,7 @@ export const ContextMenuItem = (props: ContextMenuItemProps) => {
         { shortcut && <span className='context-item-shortcut'>{shortcut}</span> }
       </ListItemText>
       { React.Children.count(children) > 0 && (
-        <ContextMenu open={Boolean(anchor)} submenu disablePortal={disablePortal} anchorEl={anchor} onClose={() => setOpen(false)}>
+        <ContextMenu open={Boolean(anchor)} submenu anchorEl={anchor} onClose={() => setOpen(false)}>
           {children}
         </ContextMenu>
       )}

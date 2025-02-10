@@ -1,5 +1,9 @@
 import { MenuItemProps, MenuProps } from "@mui/material"
 
+export type Divider = {
+  divider: boolean
+}
+
 export type ContextMenuItem = {
   /** ID for the menu item. This is the value given to the `onSelect` when the item is selected. */
   itemId?: string | number
@@ -36,6 +40,5 @@ export type ContextMenuProps = Omit<MenuProps, 'open' | 'onSelect'> & {
 
 export type ContextMenuContextValue = {
   dense: MenuItemProps['dense'],
-  disablePortal: MenuProps['disablePortal'],
   onSelect?: ContextMenuProps['onSelect']
 }

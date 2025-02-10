@@ -1,11 +1,11 @@
 import React from 'react'
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react'
 import StyledWorkbench, { Workbench } from '@ui-components/workbench/src/components/Workbench'
-import workbench from './workbench_example';
+import workbench from './workbenchExample'
 
-import { Paper } from '@mui/material';
-import { Workbench as WorkbenchT } from '@ui-components/workbench/src/types';
+import { Paper } from '@mui/material'
+import { Workbench as WorkbenchT } from '@ui-components/workbench/src/types'
 
 let key=0
 let lastWorkbench: WorkbenchT | undefined
