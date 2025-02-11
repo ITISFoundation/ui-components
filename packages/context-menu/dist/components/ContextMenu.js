@@ -69,6 +69,13 @@ const ExpandItem = (props) => {
             return (0, jsx_runtime_1.jsx)(ExpandItem, Object.assign({}, item), item.itemId || item.title);
         }) })));
 };
+/**
+ * ### Description
+ * Context menus give the user actions related to an item. They usually open when right clicking on something but can also respond to button click or tap.
+ * Their options are sometimes nested or grouped, creating new submenus that open when clicking or just hovering on the group.
+ * Items can have an main label, an icon, be marked as "checked", and have a shortcut or secondary text.
+ * They also accept separators.
+ */
 const ContextMenu = (props) => {
     const { open, submenu, dense, disablePortal, onClose, anchorRef, anchorReference = submenu ? 'anchorEl' : 'anchorPosition', anchorOrigin = ANCHOR_ORIGIN_DEFAULT, anchorPosition, onSelect, children, menu } = props, rest = __rest(props, ["open", "submenu", "dense", "disablePortal", "onClose", "anchorRef", "anchorReference", "anchorOrigin", "anchorPosition", "onSelect", "children", "menu"]);
     const [selfOpen, setSelfOpen] = (0, react_1.useState)(false);

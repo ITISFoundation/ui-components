@@ -9,7 +9,7 @@ import menu from './menuExample'
 const meta: Meta<typeof ContextMenu> = {
   component: ContextMenu,
   subcomponents: { ContextMenuItem: ContextMenuItem as React.FunctionComponent<unknown> },
-  title: 'Context menus/Context menu',
+  title: 'Context menus/Context menus',
   render: args => <StyledContextMenu {...args}/>
 };
  

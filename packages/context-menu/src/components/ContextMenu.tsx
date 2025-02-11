@@ -26,6 +26,13 @@ const ExpandItem = (props: ContextMenuItemWithSubmenu) => {
   )
 }
 
+/**
+ * ### Description
+ * Context menus give the user actions related to an item. They usually open when right clicking on something but can also respond to button click or tap.
+ * Their options are sometimes nested or grouped, creating new submenus that open when clicking or just hovering on the group.
+ * Items can have an main label, an icon, be marked as "checked", and have a shortcut or secondary text.
+ * They also accept separators.
+ */
 export const ContextMenu = (props: ContextMenuProps) => {
 
   const {
